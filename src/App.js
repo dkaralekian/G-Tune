@@ -720,11 +720,13 @@ const HomePage = ({ setPage, lang, setLang, t }) => (
     </div>
 );
 
-const bladeConfig = { Yellow: 0, Green: 240, Red: 120}; // Now defined once, outside the component.
+// ++ FIX: bladeConfig and mainRotorConstants moved outside the component ++
+const bladeConfig = { Yellow: 0, Green: 240, Red: 120};
 const mainRotorConstants = {
     constant1: { K: 15, Phi: 298 },
     constant2: { K: 22, Phi: 270 },
 };
+
 const MainRotorPage = ({ setPage, t }) => {
     const topRef = useRef(null);
     const bladeTextColors = { Yellow: 'text-yellow-400', Red: 'text-red-500', Green: 'text-green-500' };
@@ -850,7 +852,7 @@ const MainRotorPage = ({ setPage, t }) => {
 
         updateCurrentStep(newChanges);
 
-    }, [amplitude, phaseDeg, currentWeights, bladeConfig, actionManuallySet, userInput, updateCurrentStep]);
+    }, [amplitude, phaseDeg, currentWeights, actionManuallySet, userInput, updateCurrentStep]); // ++ FIX: Removed 'bladeConfig'
 
     useEffect(() => {
         if (userInput && finalCoeffs.K !== null) {
@@ -1025,6 +1027,7 @@ const MainRotorPage = ({ setPage, t }) => {
     );
 };
 
+// ++ FIX: tailRotorConstants moved outside the component ++
 const tailRotorConstants = {
     constant1: { K: 2, Phi: 310 },
     constant2: { K: 2.8, Phi: 302 },
