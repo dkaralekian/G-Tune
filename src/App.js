@@ -720,16 +720,16 @@ const HomePage = ({ setPage, lang, setLang, t }) => (
     </div>
 );
 
+const bladeConfig = { Yellow: 0, Green: 240, Red: 120}; // Now defined once, outside the component.
+const mainRotorConstants = {
+    constant1: { K: 15, Phi: 298 },
+    constant2: { K: 22, Phi: 270 },
+};
 const MainRotorPage = ({ setPage, t }) => {
     const topRef = useRef(null);
-    const bladeConfig = { Yellow: 0, Green: 240, Red: 120};
     const bladeTextColors = { Yellow: 'text-yellow-400', Red: 'text-red-500', Green: 'text-green-500' };
     
     const [calculationMode, setCalculationMode] = useState('lookup'); 
-    const mainRotorConstants = {
-        constant1: { K: 15, Phi: 298 },
-        constant2: { K: 22, Phi: 270 },
-    };
     
     const [blendRatio, setBlendRatio] = useState(100);
 
@@ -1025,6 +1025,11 @@ const MainRotorPage = ({ setPage, t }) => {
     );
 };
 
+const tailRotorConstants = {
+    constant1: { K: 2, Phi: 310 },
+    constant2: { K: 2.8, Phi: 302 },
+};
+
 const TailRotorPage = ({ setPage, t }) => {
     const topRef = useRef(null);
     const screwCount = 7;
@@ -1032,10 +1037,6 @@ const TailRotorPage = ({ setPage, t }) => {
     const largeWasherWeight = 2.0;
 
     const [calculationMode, setCalculationMode] = useState('lookup'); 
-    const tailRotorConstants = {
-        constant1: { K: 2, Phi: 310 },
-        constant2: { K: 2.8, Phi: 302 },
-    };
     
     const [blendRatio, setBlendRatio] = useState(100);
 
