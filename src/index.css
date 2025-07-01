@@ -1,0 +1,26 @@
+/* src/index.css */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: 'Rosa Sans';
+    src: url('./assets/fonts/RosaSansbold.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Rosa Sans';
+    src: url('./assets/fonts/RosaSansbold.woff2') format('woff2');
+    font-weight: bold;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'eurostile';
+    src: url('./assets/fonts/EurostileExtendedBlack.woff2') format('woff2');
+    font-weight: bold;
+    font-style: normal;
+  }
+}
