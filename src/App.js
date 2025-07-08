@@ -172,7 +172,705 @@ const translations = {
             direct: 'Direct',
             directCalculated: 'Calcul Direct : K={kValue}, Phi={phiValue}°'
         }
+    },
+    es: {
+        home: {
+            title: 'G-Tune',
+            subtitle: 'Asistente de equilibrado de rotores Cabri G2',
+            mainRotor: 'Rotor Principal',
+            tailRotor: 'Rotor de Cola',
+            language: 'Idioma',
+        },
+        mainRotor: {
+            backToHome: 'Volver al Inicio',
+            title: 'Rotor Principal',
+            step: 'Paso',
+            rotorIsBalanced: '¡Rotor equilibrado!',
+            vibrationBelowThreshold: 'La amplitud de la vibración ({amplitude} IPS) está por debajo del umbral de 0.2 IPS.',
+            calculationMethod: 'Método de Cálculo',
+            lookupTable: 'Árboles de Decisión',
+            constant1: 'Constante 1 (K=15, Φ=298)',
+            constant2: 'Constante 2 (K=22, Φ=270)',
+            vibrationMeasurement: 'Medición de Vibraciones',
+            amplitudeLabel: 'Amplitud (IPS)',
+            phaseLabelHHMM: 'Fase (hh:mm)',
+            phaseLabelDegrees: 'Fase (grados)',
+            currentlyInstalledWeights: 'Pesos Actualmente Instalados',
+            fromPreviousStep: 'Del paso anterior.',
+            yellowBlade: 'Pala Amarilla',
+            greenBlade: 'Pala Verde',
+            redBlade: 'Pala Roja',
+            recommendationAction: 'Recomendación y Acción',
+            addToCurrentlyInstalled: 'Añadir a los pesos actuales',
+            recommended: 'Recomendado',
+            yourAction: 'Tu Acción',
+            totalWeight: 'Peso Total',
+            goToNextStep: 'Siguiente Paso',
+            goToPreviousStep: 'Paso Anterior',
+            generateReport: 'Generar Informe PDF',
+            interpolatedValues: 'K={kValue}, Phi={phiValue}°',
+            plotTitle: 'Gráfico de Equilibrado',
+            calculationBlend: 'Mezcla de Cálculo: {blendRatio}% Directo / {inverseBlendRatio}% Método',
+            method: 'Método',
+            direct: 'Directo',
+            directCalculated: 'Calculado Directamente: K={kValue}, Phi={phiValue}°'
+        },
+        tailRotor: {
+            backToHome: 'Volver al Inicio',
+            title: 'Rotor de Cola',
+            step: 'Paso',
+            rotorIsBalanced: '¡Rotor equilibrado!',
+            vibrationBelowThreshold: 'La amplitud de la vibración ({amplitude} IPS) está por debajo del umbral de 0.2 IPS.',
+            calculationMethod: 'Método de Cálculo',
+            lookupTable: 'Árboles de Decisión',
+            constant1: 'Constante 1 (K=2, Φ=310)',
+            constant2: 'Constante 2 (K=2.8, Φ=302)',
+            vibrationMeasurement: 'Medición de Vibraciones',
+            amplitudeLabel: 'Amplitud (IPS)',
+            phaseLabelHHMM: 'Fase (hh:mm)',
+            phaseLabelDegrees: 'Fase (grados)',
+            installedWeights: 'Pesos Instalados',
+            enterWashers: 'Introduce las arandelas actualmente en el rotor.',
+            fromPreviousStep: '(Del paso anterior)',
+            small: 'Pequeña',
+            large: 'Grande',
+            recommendation: 'Recomendación',
+            recommendationFinalSetup: 'Recomendación y Configuración Final',
+            recommendedFinalWashers: 'Arandelas Finales Recomendadas',
+            yourFinalWasherSetup: 'Tu Configuración Final de Arandelas',
+            goToNextStep: 'Siguiente Paso',
+            goToPreviousStep: 'Paso Anterior',
+            generateReport: 'Generar Informe PDF',
+            interpolatedValues: 'K={kValue}, Phi={phiValue}°',
+            plotTitle: 'Gráfico de Equilibrado',
+            calculationBlend: 'Mezcla de Cálculo: {blendRatio}% Directo / {inverseBlendRatio}% Método',
+            method: 'Método',
+            direct: 'Directo',
+            directCalculated: 'Calculado Directamente: K={kValue}, Phi={phiValue}°'
+        }
+    },
+    de: {
+        home: {
+            title: 'G-Tune',
+            subtitle: 'Cabri G2 Rotor-Auswucht-Assistent',
+            mainRotor: 'Hauptrotor',
+            tailRotor: 'Heckrotor',
+            language: 'Sprache',
+        },
+        mainRotor: {
+            backToHome: 'Zurück zur Startseite',
+            title: 'Hauptrotor',
+            step: 'Schritt',
+            rotorIsBalanced: 'Rotor ist ausgewuchtet!',
+            vibrationBelowThreshold: 'Vibrationsamplitude ({amplitude} IPS) liegt unter dem Schwellenwert von 0,2 IPS.',
+            calculationMethod: 'Berechnungsmethode',
+            lookupTable: 'Entscheidungsbäume',
+            constant1: 'Konstante 1 (K=15, Φ=298)',
+            constant2: 'Konstante 2 (K=22, Φ=270)',
+            vibrationMeasurement: 'Vibrationsmessung',
+            amplitudeLabel: 'Amplitude (IPS)',
+            phaseLabelHHMM: 'Phase (hh:mm)',
+            phaseLabelDegrees: 'Phase (Grad)',
+            currentlyInstalledWeights: 'Aktuell installierte Gewichte',
+            fromPreviousStep: 'Aus dem vorherigen Schritt.',
+            yellowBlade: 'Gelbes Blatt',
+            greenBlade: 'Grünes Blatt',
+            redBlade: 'Rotes Blatt',
+            recommendationAction: 'Empfehlung & Aktion',
+            addToCurrentlyInstalled: 'Zu den aktuell installierten hinzufügen',
+            recommended: 'Empfohlen',
+            yourAction: 'Ihre Aktion',
+            totalWeight: 'Gesamtgewicht',
+            goToNextStep: 'Nächster Schritt',
+            goToPreviousStep: 'Vorheriger Schritt',
+            generateReport: 'PDF-Bericht erstellen',
+            interpolatedValues: 'K={kValue}, Phi={phiValue}°',
+            plotTitle: 'Auswuchtdiagramm',
+            calculationBlend: 'Berechnungsmischung: {blendRatio}% Direkt / {inverseBlendRatio}% Methode',
+            method: 'Methode',
+            direct: 'Direkt',
+            directCalculated: 'Direkt berechnet: K={kValue}, Phi={phiValue}°'
+        },
+        tailRotor: {
+            backToHome: 'Zurück zur Startseite',
+            title: 'Heckrotor',
+            step: 'Schritt',
+            rotorIsBalanced: 'Rotor ist ausgewuchtet!',
+            vibrationBelowThreshold: 'Vibrationsamplitude ({amplitude} IPS) liegt unter dem Schwellenwert von 0,2 IPS.',
+            calculationMethod: 'Berechnungsmethode',
+            lookupTable: 'Entscheidungsbäume',
+            constant1: 'Konstante 1 (K=2, Φ=310)',
+            constant2: 'Konstante 2 (K=2.8, Φ=302)',
+            vibrationMeasurement: 'Vibrationsmessung',
+            amplitudeLabel: 'Amplitude (IPS)',
+            phaseLabelHHMM: 'Phase (hh:mm)',
+            phaseLabelDegrees: 'Phase (Grad)',
+            installedWeights: 'Installierte Gewichte',
+            enterWashers: 'Geben Sie die aktuell auf dem Rotor befindlichen Unterlegscheiben ein.',
+            fromPreviousStep: '(Aus dem vorherigen Schritt)',
+            small: 'Klein',
+            large: 'Groß',
+            recommendation: 'Empfehlung',
+            recommendationFinalSetup: 'Empfehlung & Endgültige Einrichtung',
+            recommendedFinalWashers: 'Empfohlene endgültige Unterlegscheiben',
+            yourFinalWasherSetup: 'Ihre endgültige Unterlegscheiben-Einrichtung',
+            goToNextStep: 'Nächster Schritt',
+            goToPreviousStep: 'Vorheriger Schritt',
+            generateReport: 'PDF-Bericht erstellen',
+            interpolatedValues: 'K={kValue}, Phi={phiValue}°',
+            plotTitle: 'Auswuchtdiagramm',
+            calculationBlend: 'Berechnungsmischung: {blendRatio}% Direkt / {inverseBlendRatio}% Methode',
+            method: 'Methode',
+            direct: 'Direkt',
+            directCalculated: 'Direkt berechnet: K={kValue}, Phi={phiValue}°'
+        }
+    },
+    it: {
+        home: {
+            title: 'G-Tune',
+            subtitle: 'Assistente al bilanciamento dei rotori Cabri G2',
+            mainRotor: 'Rotore Principale',
+            tailRotor: 'Rotore di Coda',
+            language: 'Lingua',
+        },
+        mainRotor: {
+            backToHome: 'Torna alla Home',
+            title: 'Rotore Principale',
+            step: 'Passo',
+            rotorIsBalanced: 'Rotore bilanciato!',
+            vibrationBelowThreshold: 'L\'ampiezza della vibrazione ({amplitude} IPS) è inferiore alla soglia di 0.2 IPS.',
+            calculationMethod: 'Metodo di Calcolo',
+            lookupTable: 'Alberi Decisionali',
+            constant1: 'Costante 1 (K=15, Φ=298)',
+            constant2: 'Costante 2 (K=22, Φ=270)',
+            vibrationMeasurement: 'Misurazione Vibrazioni',
+            amplitudeLabel: 'Ampiezza (IPS)',
+            phaseLabelHHMM: 'Fase (hh:mm)',
+            phaseLabelDegrees: 'Fase (gradi)',
+            currentlyInstalledWeights: 'Pesi Attualmente Installati',
+            fromPreviousStep: 'Dal passo precedente.',
+            yellowBlade: 'Pala Gialla',
+            greenBlade: 'Pala Verde',
+            redBlade: 'Pala Rossa',
+            recommendationAction: 'Raccomandazione e Azione',
+            addToCurrentlyInstalled: 'Aggiungi ai pesi attuali',
+            recommended: 'Raccomandato',
+            yourAction: 'La Tua Azione',
+            totalWeight: 'Peso Totale',
+            goToNextStep: 'Passo Successivo',
+            goToPreviousStep: 'Passo Precedente',
+            generateReport: 'Genera Report PDF',
+            interpolatedValues: 'K={kValue}, Phi={phiValue}°',
+            plotTitle: 'Grafico di Bilanciamento',
+            calculationBlend: 'Misto di Calcolo: {blendRatio}% Diretto / {inverseBlendRatio}% Metodo',
+            method: 'Metodo',
+            direct: 'Diretto',
+            directCalculated: 'Calcolato Direttamente: K={kValue}, Phi={phiValue}°'
+        },
+        tailRotor: {
+            backToHome: 'Torna alla Home',
+            title: 'Rotore di Coda',
+            step: 'Passo',
+            rotorIsBalanced: 'Rotore bilanciato!',
+            vibrationBelowThreshold: 'L\'ampiezza della vibrazione ({amplitude} IPS) è inferiore alla soglia di 0.2 IPS.',
+            calculationMethod: 'Metodo di Calcolo',
+            lookupTable: 'Alberi Decisionali',
+            constant1: 'Costante 1 (K=2, Φ=310)',
+            constant2: 'Costante 2 (K=2.8, Φ=302)',
+            vibrationMeasurement: 'Misurazione Vibrazioni',
+            amplitudeLabel: 'Ampiezza (IPS)',
+            phaseLabelHHMM: 'Fase (hh:mm)',
+            phaseLabelDegrees: 'Fase (gradi)',
+            installedWeights: 'Pesi Installati',
+            enterWashers: 'Inserisci le rondelle attualmente sul rotore.',
+            fromPreviousStep: '(Dal passo precedente)',
+            small: 'Piccola',
+            large: 'Grande',
+            recommendation: 'Raccomandazione',
+            recommendationFinalSetup: 'Raccomandazione e Configurazione Finale',
+            recommendedFinalWashers: 'Rondelle Finali Raccomandate',
+            yourFinalWasherSetup: 'La Tua Configurazione Finale di Rondelle',
+            goToNextStep: 'Passo Successivo',
+            goToPreviousStep: 'Passo Precedente',
+            generateReport: 'Genera Report PDF',
+            interpolatedValues: 'K={kValue}, Phi={phiValue}°',
+            plotTitle: 'Grafico di Bilanciamento',
+            calculationBlend: 'Misto di Calcolo: {blendRatio}% Diretto / {inverseBlendRatio}% Metodo',
+            method: 'Metodo',
+            direct: 'Diretto',
+            directCalculated: 'Calcolato Direttamente: K={kValue}, Phi={phiValue}°'
+        }
+    },
+    zh: {
+        home: {
+            title: 'G-Tune',
+            subtitle: 'Cabri G2 旋翼平衡助手',
+            mainRotor: '主旋翼',
+            tailRotor: '尾旋翼',
+            language: '语言',
+        },
+        mainRotor: {
+            backToHome: '返回首页',
+            title: '主旋翼',
+            step: '步骤',
+            rotorIsBalanced: '旋翼已平衡！',
+            vibrationBelowThreshold: '振动幅度 ({amplitude} IPS) 低于 0.2 IPS 阈值。',
+            calculationMethod: '计算方法',
+            lookupTable: '决策树',
+            constant1: '常数 1 (K=15, Φ=298)',
+            constant2: '常数 2 (K=22, Φ=270)',
+            vibrationMeasurement: '振动测量',
+            amplitudeLabel: '幅度 (IPS)',
+            phaseLabelHHMM: '相位 (hh:mm)',
+            phaseLabelDegrees: '相位 (度)',
+            currentlyInstalledWeights: '当前安装的配重',
+            fromPreviousStep: '来自上一步。',
+            yellowBlade: '黄桨叶',
+            greenBlade: '绿桨叶',
+            redBlade: '红桨叶',
+            recommendationAction: '建议与操作',
+            addToCurrentlyInstalled: '添加到当前安装的配重',
+            recommended: '建议',
+            yourAction: '您的操作',
+            totalWeight: '总重量',
+            goToNextStep: '下一步',
+            goToPreviousStep: '上一步',
+            generateReport: '生成PDF报告',
+            interpolatedValues: 'K={kValue}, Phi={phiValue}°',
+            plotTitle: '平衡图',
+            calculationBlend: '计算混合: {blendRatio}% 直接 / {inverseBlendRatio}% 方法',
+            method: '方法',
+            direct: '直接',
+            directCalculated: '直接计算: K={kValue}, Phi={phiValue}°'
+        },
+        tailRotor: {
+            backToHome: '返回首页',
+            title: '尾旋翼',
+            step: '步骤',
+            rotorIsBalanced: '旋翼已平衡！',
+            vibrationBelowThreshold: '振动幅度 ({amplitude} IPS) 低于 0.2 IPS 阈值。',
+            calculationMethod: '计算方法',
+            lookupTable: '决策树',
+            constant1: '常数 1 (K=2, Φ=310)',
+            constant2: '常数 2 (K=2.8, Φ=302)',
+            vibrationMeasurement: '振动测量',
+            amplitudeLabel: '幅度 (IPS)',
+            phaseLabelHHMM: '相位 (hh:mm)',
+            phaseLabelDegrees: '相位 (度)',
+            installedWeights: '已安装的配重',
+            enterWashers: '输入当前旋翼上的垫圈。',
+            fromPreviousStep: '(来自上一步)',
+            small: '小',
+            large: '大',
+            recommendation: '建议',
+            recommendationFinalSetup: '建议与最终设置',
+            recommendedFinalWashers: '建议的最终垫圈',
+            yourFinalWasherSetup: '您的最终垫圈设置',
+            goToNextStep: '下一步',
+            goToPreviousStep: '上一步',
+            generateReport: '生成PDF报告',
+            interpolatedValues: 'K={kValue}, Phi={phiValue}°',
+            plotTitle: '平衡图',
+            calculationBlend: '计算混合: {blendRatio}% 直接 / {inverseBlendRatio}% 方法',
+            method: '方法',
+            direct: '直接',
+            directCalculated: '直接计算: K={kValue}, Phi={phiValue}°'
+        }
+    },
+    hy: {
+        home: {
+            title: 'G-Tune',
+            subtitle: 'Cabri G2 ռոտորի հավասարակշռման օգնական',
+            mainRotor: 'Հիմնական ռոտոր',
+            tailRotor: 'Պոչի ռոտոր',
+            language: 'Լեզու',
+        },
+        mainRotor: {
+            backToHome: 'Վերադառնալ գլխավոր էջ',
+            title: 'Հիմնական ռոտոր',
+            step: 'Քայլ',
+            rotorIsBalanced: 'Ռոտորը հավասարակշռված է։',
+            vibrationBelowThreshold: 'Թրթռման ամպլիտուդը ({amplitude} IPS) 0.2 IPS շեմից ցածր է։',
+            calculationMethod: 'Հաշվարկման մեթոդ',
+            lookupTable: 'Որոշումների ծառեր',
+            constant1: 'Հաստատուն 1 (K=15, Φ=298)',
+            constant2: 'Հաստատուն 2 (K=22, Φ=270)',
+            vibrationMeasurement: 'Թրթռման չափում',
+            amplitudeLabel: 'Ամպլիտուդ (IPS)',
+            phaseLabelHHMM: 'Ֆազ (ժժ:րր)',
+            phaseLabelDegrees: 'Ֆազ (աստիճան)',
+            currentlyInstalledWeights: 'Ներկայումս տեղադրված կշիռներ',
+            fromPreviousStep: 'Նախորդ քայլից։',
+            yellowBlade: 'Դեղին թիակ',
+            greenBlade: 'Կանաչ թիակ',
+            redBlade: 'Կարմիր թիակ',
+            recommendationAction: 'Առաջարկություն և գործողություն',
+            addToCurrentlyInstalled: 'Ավելացնել ընթացիկ կշիռներին',
+            recommended: 'Առաջարկվող',
+            yourAction: 'Ձեր գործողությունը',
+            totalWeight: 'Ընդհանուր քաշ',
+            goToNextStep: 'Հաջորդ քայլ',
+            goToPreviousStep: 'Նախորդ քայլ',
+            generateReport: 'Ստեղծել PDF հաշվետվություն',
+            interpolatedValues: 'K={kValue}, Phi={phiValue}°',
+            plotTitle: 'Հավասարակշռման գծապատկեր',
+            calculationBlend: 'Հաշվարկի խառնուրդ՝ {blendRatio}% Ուղիղ / {inverseBlendRatio}% Մեթոդ',
+            method: 'Մեթոդ',
+            direct: 'Ուղիղ',
+            directCalculated: 'Ուղղակիորեն հաշվարկված՝ K={kValue}, Phi={phiValue}°'
+        },
+        tailRotor: {
+            backToHome: 'Վերադառնալ գլխավոր էջ',
+            title: 'Պոչի ռոտոր',
+            step: 'Քայլ',
+            rotorIsBalanced: 'Ռոտորը հավասարակշռված է։',
+            vibrationBelowThreshold: 'Թրթռման ամպլիտուդը ({amplitude} IPS) 0.2 IPS շեմից ցածր է։',
+            calculationMethod: 'Հաշվարկման մեթոդ',
+            lookupTable: 'Որոշումների ծառեր',
+            constant1: 'Հաստատուն 1 (K=2, Φ=310)',
+            constant2: 'Հաստատուն 2 (K=2.8, Φ=302)',
+            vibrationMeasurement: 'Թրթռման չափում',
+            amplitudeLabel: 'Ամպլիտուդ (IPS)',
+            phaseLabelHHMM: 'Ֆազ (ժժ:րր)',
+            phaseLabelDegrees: 'Ֆազ (աստիճան)',
+            installedWeights: 'Տեղադրված կշիռներ',
+            enterWashers: 'Մուտքագրեք ռոտորի վրա ներկայումս առկա լվացող մեքենաները։',
+            fromPreviousStep: '(Նախորդ քայլից)',
+            small: 'Փոքր',
+            large: 'Մեծ',
+            recommendation: 'Առաջարկություն',
+            recommendationFinalSetup: 'Առաջարկություն և վերջնական կարգավորում',
+            recommendedFinalWashers: 'Առաջարկվող վերջնական լվացող մեքենաներ',
+            yourFinalWasherSetup: 'Ձեր վերջնական լվացող մեքենայի կարգավորումը',
+            goToNextStep: 'Հաջորդ քայլ',
+            goToPreviousStep: 'Նախորդ քայլ',
+            generateReport: 'Ստեղծել PDF հաշվետվություն',
+            interpolatedValues: 'K={kValue}, Phi={phiValue}°',
+            plotTitle: 'Հավասարակշռման գծապատկեր',
+            calculationBlend: 'Հաշվարկի խառնուրդ՝ {blendRatio}% Ուղիղ / {inverseBlendRatio}% Մեթոդ',
+            method: 'Մեթոդ',
+            direct: 'Ուղիղ',
+            directCalculated: 'Ուղղակիորեն հաշվարկված՝ K={kValue}, Phi={phiValue}°'
+        }
+    },
+    ms: {
+        home: {
+            title: 'G-Tune',
+            subtitle: 'Pembantu Pengimbangan Rotor Cabri G2',
+            mainRotor: 'Rotor Utama',
+            tailRotor: 'Rotor Ekor',
+            language: 'Bahasa',
+        },
+        mainRotor: {
+            backToHome: 'Kembali ke Laman Utama',
+            title: 'Rotor Utama',
+            step: 'Langkah',
+            rotorIsBalanced: 'Rotor Seimbang!',
+            vibrationBelowThreshold: 'Amplitud getaran ({amplitude} IPS) di bawah ambang 0.2 IPS.',
+            calculationMethod: 'Kaedah Pengiraan',
+            lookupTable: 'Pokok Keputusan',
+            constant1: 'Pemalar 1 (K=15, Φ=298)',
+            constant2: 'Pemalar 2 (K=22, Φ=270)',
+            vibrationMeasurement: 'Pengukuran Getaran',
+            amplitudeLabel: 'Amplitud (IPS)',
+            phaseLabelHHMM: 'Fasa (jj:mm)',
+            phaseLabelDegrees: 'Fasa (darjah)',
+            currentlyInstalledWeights: 'Pemberat yang Dipasang Sekarang',
+            fromPreviousStep: 'Dari langkah sebelumnya.',
+            yellowBlade: 'Bilah Kuning',
+            greenBlade: 'Bilah Hijau',
+            redBlade: 'Bilah Merah',
+            recommendationAction: 'Syor & Tindakan',
+            addToCurrentlyInstalled: 'Tambah pada yang dipasang sekarang',
+            recommended: 'Disyorkan',
+            yourAction: 'Tindakan Anda',
+            totalWeight: 'Jumlah Berat',
+            goToNextStep: 'Langkah Seterusnya',
+            goToPreviousStep: 'Langkah Sebelumnya',
+            generateReport: 'Jana Laporan PDF',
+            interpolatedValues: 'K={kValue}, Phi={phiValue}°',
+            plotTitle: 'Plot Pengimbangan',
+            calculationBlend: 'Campuran Pengiraan: {blendRatio}% Terus / {inverseBlendRatio}% Kaedah',
+            method: 'Kaedah',
+            direct: 'Terus',
+            directCalculated: 'Dikira Terus: K={kValue}, Phi={phiValue}°'
+        },
+        tailRotor: {
+            backToHome: 'Kembali ke Laman Utama',
+            title: 'Rotor Ekor',
+            step: 'Langkah',
+            rotorIsBalanced: 'Rotor Seimbang!',
+            vibrationBelowThreshold: 'Amplitud getaran ({amplitude} IPS) di bawah ambang 0.2 IPS.',
+            calculationMethod: 'Kaedah Pengiraan',
+            lookupTable: 'Pokok Keputusan',
+            constant1: 'Pemalar 1 (K=2, Φ=310)',
+            constant2: 'Pemalar 2 (K=2.8, Φ=302)',
+            vibrationMeasurement: 'Pengukuran Getaran',
+            amplitudeLabel: 'Amplitud (IPS)',
+            phaseLabelHHMM: 'Fasa (jj:mm)',
+            phaseLabelDegrees: 'Fasa (darjah)',
+            installedWeights: 'Pemberat yang Dipasang',
+            enterWashers: 'Masukkan sesendal yang sedang ada di rotor.',
+            fromPreviousStep: '(Dari langkah sebelumnya)',
+            small: 'Kecil',
+            large: 'Besar',
+            recommendation: 'Syor',
+            recommendationFinalSetup: 'Syor & Pemasangan Akhir',
+            recommendedFinalWashers: 'Sesendal Akhir yang Disyorkan',
+            yourFinalWasherSetup: 'Pemasangan Sesendal Akhir Anda',
+            goToNextStep: 'Langkah Seterusnya',
+            goToPreviousStep: 'Langkah Sebelumnya',
+            generateReport: 'Jana Laporan PDF',
+            interpolatedValues: 'K={kValue}, Phi={phiValue}°',
+            plotTitle: 'Plot Pengimbangan',
+            calculationBlend: 'Campuran Pengiraan: {blendRatio}% Terus / {inverseBlendRatio}% Kaedah',
+            method: 'Kaedah',
+            direct: 'Terus',
+            directCalculated: 'Dikira Terus: K={kValue}, Phi={phiValue}°'
+        }
+    },
+    pl: {
+        home: {
+            title: 'G-Tune',
+            subtitle: 'Asystent wyważania wirnika Cabri G2',
+            mainRotor: 'Wirnik główny',
+            tailRotor: 'Wirnik ogonowy',
+            language: 'Język',
+        },
+        mainRotor: {
+            backToHome: 'Powrót do strony głównej',
+            title: 'Wirnik główny',
+            step: 'Krok',
+            rotorIsBalanced: 'Wirnik jest wyważony!',
+            vibrationBelowThreshold: 'Amplituda wibracji ({amplitude} IPS) jest poniżej progu 0.2 IPS.',
+            calculationMethod: 'Metoda obliczeniowa',
+            lookupTable: 'Drzewa decyzyjne',
+            constant1: 'Stała 1 (K=15, Φ=298)',
+            constant2: 'Stała 2 (K=22, Φ=270)',
+            vibrationMeasurement: 'Pomiar wibracji',
+            amplitudeLabel: 'Amplituda (IPS)',
+            phaseLabelHHMM: 'Faza (gg:mm)',
+            phaseLabelDegrees: 'Faza (stopnie)',
+            currentlyInstalledWeights: 'Obecnie zainstalowane odważniki',
+            fromPreviousStep: 'Z poprzedniego kroku.',
+            yellowBlade: 'Łopata żółta',
+            greenBlade: 'Łopata zielona',
+            redBlade: 'Łopata czerwona',
+            recommendationAction: 'Zalecenie i działanie',
+            addToCurrentlyInstalled: 'Dodaj do obecnie zainstalowanych',
+            recommended: 'Zalecane',
+            yourAction: 'Twoje działanie',
+            totalWeight: 'Waga całkowita',
+            goToNextStep: 'Następny krok',
+            goToPreviousStep: 'Poprzedni krok',
+            generateReport: 'Generuj raport PDF',
+            interpolatedValues: 'K={kValue}, Phi={phiValue}°',
+            plotTitle: 'Wykres wyważania',
+            calculationBlend: 'Mieszanka obliczeniowa: {blendRatio}% Bezpośrednia / {inverseBlendRatio}% Metoda',
+            method: 'Metoda',
+            direct: 'Bezpośrednia',
+            directCalculated: 'Obliczone bezpośrednio: K={kValue}, Phi={phiValue}°'
+        },
+        tailRotor: {
+            backToHome: 'Powrót do strony głównej',
+            title: 'Wirnik ogonowy',
+            step: 'Krok',
+            rotorIsBalanced: 'Wirnik jest wyważony!',
+            vibrationBelowThreshold: 'Amplituda wibracji ({amplitude} IPS) jest poniżej progu 0.2 IPS.',
+            calculationMethod: 'Metoda obliczeniowa',
+            lookupTable: 'Drzewa decyzyjne',
+            constant1: 'Stała 1 (K=2, Φ=310)',
+            constant2: 'Stała 2 (K=2.8, Φ=302)',
+            vibrationMeasurement: 'Pomiar wibracji',
+            amplitudeLabel: 'Amplituda (IPS)',
+            phaseLabelHHMM: 'Faza (gg:mm)',
+            phaseLabelDegrees: 'Faza (stopnie)',
+            installedWeights: 'Zainstalowane odważniki',
+            enterWashers: 'Wprowadź podkładki aktualnie na wirniku.',
+            fromPreviousStep: '(Z poprzedniego kroku)',
+            small: 'Mała',
+            large: 'Duża',
+            recommendation: 'Zalecenie',
+            recommendationFinalSetup: 'Zalecenie i ostateczna konfiguracja',
+            recommendedFinalWashers: 'Zalecane podkładki końcowe',
+            yourFinalWasherSetup: 'Twoja ostateczna konfiguracja podkładek',
+            goToNextStep: 'Następny krok',
+            goToPreviousStep: 'Poprzedni krok',
+            generateReport: 'Generuj raport PDF',
+            interpolatedValues: 'K={kValue}, Phi={phiValue}°',
+            plotTitle: 'Wykres wyważania',
+            calculationBlend: 'Mieszanka obliczeniowa: {blendRatio}% Bezpośrednia / {inverseBlendRatio}% Metoda',
+            method: 'Metoda',
+            direct: 'Bezpośrednia',
+            directCalculated: 'Obliczone bezpośrednio: K={kValue}, Phi={phiValue}°'
+        }
+    },
+    cs: {
+        home: {
+            title: 'G-Tune',
+            subtitle: 'Asistent vyvažování rotorů Cabri G2',
+            mainRotor: 'Hlavní rotor',
+            tailRotor: 'Ocasní rotor',
+            language: 'Jazyk',
+        },
+        mainRotor: {
+            backToHome: 'Zpět na domovskou stránku',
+            title: 'Hlavní rotor',
+            step: 'Krok',
+            rotorIsBalanced: 'Rotor je vyvážený!',
+            vibrationBelowThreshold: 'Amplituda vibrací ({amplitude} IPS) je pod prahem 0.2 IPS.',
+            calculationMethod: 'Metoda výpočtu',
+            lookupTable: 'Rozhodovací stromy',
+            constant1: 'Konstanta 1 (K=15, Φ=298)',
+            constant2: 'Konstanta 2 (K=22, Φ=270)',
+            vibrationMeasurement: 'Měření vibrací',
+            amplitudeLabel: 'Amplituda (IPS)',
+            phaseLabelHHMM: 'Fáze (hh:mm)',
+            phaseLabelDegrees: 'Fáze (stupně)',
+            currentlyInstalledWeights: 'Aktuálně nainstalovaná závaží',
+            fromPreviousStep: 'Z předchozího kroku.',
+            yellowBlade: 'Žlutý list',
+            greenBlade: 'Zelený list',
+            redBlade: 'Červený list',
+            recommendationAction: 'Doporučení a akce',
+            addToCurrentlyInstalled: 'Přidat k aktuálně nainstalovaným',
+            recommended: 'Doporučeno',
+            yourAction: 'Vaše akce',
+            totalWeight: 'Celková hmotnost',
+            goToNextStep: 'Další krok',
+            goToPreviousStep: 'Předchozí krok',
+            generateReport: 'Vytvořit PDF zprávu',
+            interpolatedValues: 'K={kValue}, Phi={phiValue}°',
+            plotTitle: 'Graf vyvažování',
+            calculationBlend: 'Směs výpočtu: {blendRatio}% Přímá / {inverseBlendRatio}% Metoda',
+            method: 'Metoda',
+            direct: 'Přímá',
+            directCalculated: 'Přímo vypočteno: K={kValue}, Phi={phiValue}°'
+        },
+        tailRotor: {
+            backToHome: 'Zpět na domovskou stránku',
+            title: 'Ocasní rotor',
+            step: 'Krok',
+            rotorIsBalanced: 'Rotor je vyvážený!',
+            vibrationBelowThreshold: 'Amplituda vibrací ({amplitude} IPS) je pod prahem 0.2 IPS.',
+            calculationMethod: 'Metoda výpočtu',
+            lookupTable: 'Rozhodovací stromy',
+            constant1: 'Konstanta 1 (K=2, Φ=310)',
+            constant2: 'Konstanta 2 (K=2.8, Φ=302)',
+            vibrationMeasurement: 'Měření vibrací',
+            amplitudeLabel: 'Amplituda (IPS)',
+            phaseLabelHHMM: 'Fáze (hh:mm)',
+            phaseLabelDegrees: 'Fáze (stupně)',
+            installedWeights: 'Nainstalovaná závaží',
+            enterWashers: 'Zadejte podložky aktuálně na rotoru.',
+            fromPreviousStep: '(Z předchozího kroku)',
+            small: 'Malá',
+            large: 'Velká',
+            recommendation: 'Doporučení',
+            recommendationFinalSetup: 'Doporučení a konečné nastavení',
+            recommendedFinalWashers: 'Doporučené konečné podložky',
+            yourFinalWasherSetup: 'Vaše konečné nastavení podložek',
+            goToNextStep: 'Další krok',
+            goToPreviousStep: 'Předchozí krok',
+            generateReport: 'Vytvořit PDF zprávu',
+            interpolatedValues: 'K={kValue}, Phi={phiValue}°',
+            plotTitle: 'Graf vyvažování',
+            calculationBlend: 'Směs výpočtu: {blendRatio}% Přímá / {inverseBlendRatio}% Metoda',
+            method: 'Metoda',
+            direct: 'Přímá',
+            directCalculated: 'Přímo vypočteno: K={kValue}, Phi={phiValue}°'
+        }
+    },
+    ro: {
+        home: {
+            title: 'G-Tune',
+            subtitle: 'Asistent de echilibrare a rotorului Cabri G2',
+            mainRotor: 'Rotor principal',
+            tailRotor: 'Rotor de coadă',
+            language: 'Limbă',
+        },
+        mainRotor: {
+            backToHome: 'Înapoi la Acasă',
+            title: 'Rotor principal',
+            step: 'Pas',
+            rotorIsBalanced: 'Rotorul este echilibrat!',
+            vibrationBelowThreshold: 'Amplitudinea vibrațiilor ({amplitude} IPS) este sub pragul de 0.2 IPS.',
+            calculationMethod: 'Metoda de calcul',
+            lookupTable: 'Arbori de decizie',
+            constant1: 'Constanta 1 (K=15, Φ=298)',
+            constant2: 'Constanta 2 (K=22, Φ=270)',
+            vibrationMeasurement: 'Măsurarea vibrațiilor',
+            amplitudeLabel: 'Amplitudine (IPS)',
+            phaseLabelHHMM: 'Fază (hh:mm)',
+            phaseLabelDegrees: 'Fază (grade)',
+            currentlyInstalledWeights: 'Greutăți instalate în prezent',
+            fromPreviousStep: 'Din pasul anterior.',
+            yellowBlade: 'Pală galbenă',
+            greenBlade: 'Pală verde',
+            redBlade: 'Pală roșie',
+            recommendationAction: 'Recomandare și acțiune',
+            addToCurrentlyInstalled: 'Adăugați la greutățile instalate în prezent',
+            recommended: 'Recomandat',
+            yourAction: 'Acțiunea ta',
+            totalWeight: 'Greutate totală',
+            goToNextStep: 'Pasul următor',
+            goToPreviousStep: 'Pasul anterior',
+            generateReport: 'Generați raport PDF',
+            interpolatedValues: 'K={kValue}, Phi={phiValue}°',
+            plotTitle: 'Grafic de echilibrare',
+            calculationBlend: 'Amestec de calcul: {blendRatio}% Direct / {inverseBlendRatio}% Metodă',
+            method: 'Metodă',
+            direct: 'Direct',
+            directCalculated: 'Calculat direct: K={kValue}, Phi={phiValue}°'
+        },
+        tailRotor: {
+            backToHome: 'Înapoi la Acasă',
+            title: 'Rotor de coadă',
+            step: 'Pas',
+            rotorIsBalanced: 'Rotorul este echilibrat!',
+            vibrationBelowThreshold: 'Amplitudinea vibrațiilor ({amplitude} IPS) este sub pragul de 0.2 IPS.',
+            calculationMethod: 'Metoda de calcul',
+            lookupTable: 'Arbori de decizie',
+            constant1: 'Constanta 1 (K=2, Φ=310)',
+            constant2: 'Constanta 2 (K=2.8, Φ=302)',
+            vibrationMeasurement: 'Măsurarea vibrațiilor',
+            amplitudeLabel: 'Amplitudine (IPS)',
+            phaseLabelHHMM: 'Fază (hh:mm)',
+            phaseLabelDegrees: 'Fază (grade)',
+            installedWeights: 'Greutăți instalate',
+            enterWashers: 'Introduceți șaibele de pe rotor.',
+            fromPreviousStep: '(Din pasul anterior)',
+            small: 'Mică',
+            large: 'Mare',
+            recommendation: 'Recomandare',
+            recommendationFinalSetup: 'Recomandare și configurare finală',
+            recommendedFinalWashers: 'Șaibe finale recomandate',
+            yourFinalWasherSetup: 'Configurarea finală a șaibelor tale',
+            goToNextStep: 'Pasul următor',
+            goToPreviousStep: 'Pasul anterior',
+            generateReport: 'Generați raport PDF',
+            interpolatedValues: 'K={kValue}, Phi={phiValue}°',
+            plotTitle: 'Grafic de echilibrare',
+            calculationBlend: 'Amestec de calcul: {blendRatio}% Direct / {inverseBlendRatio}% Metodă',
+            method: 'Metodă',
+            direct: 'Direct',
+            directCalculated: 'Calculat direct: K={kValue}, Phi={phiValue}°'
+        }
     }
+};
+
+const langNames = {
+    en: 'English',
+    fr: 'Français',
+    es: 'Español',
+    de: 'Deutsch',
+    it: 'Italiano',
+    zh: '中文',
+    hy: 'Հայերեն',
+    ms: 'Bahasa Melayu',
+    pl: 'Polski',
+    cs: 'Čeština',
+    ro: 'Română'
 };
 
 // --- FONCTIONS UTILITAIRES ---
@@ -598,7 +1296,7 @@ const TailRotorPlot = React.memo(({ amplitude, phaseDeg, K, Phi }) => {
 
     const plotScrews = screws.map(s => ({
         ...s,
-        plotAngle: (s.origAngle - Phi - 180 + 360) % 360,
+        plotAngle: (s.origAngle + Phi - 180 + 360) % 360,
     }));
 
     const weightGrads = [
@@ -699,26 +1397,67 @@ const TailRotorPlot = React.memo(({ amplitude, phaseDeg, K, Phi }) => {
 
 // --- PAGE COMPONENTS ---
 
-const HomePage = ({ setPage, lang, setLang, t }) => (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4 text-white bg-gray-900">
-        <img src={logo} alt="Guimbal" className="w-48 mb-4" />
-        <h1 className="text-4xl font-bold text-cyan-400 mb-2 font-eurostile">{t.home.title}</h1>
-        <p className="mb-8 text-gray-400">{t.home.subtitle}</p>
-        <div className="w-full max-w-sm space-y-4">
-            <button onClick={() => setPage('main')} className="w-full p-4 font-bold font-eurostile text-white transition bg-gray-800 rounded-lg shadow-lg hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-opacity-50">{t.home.mainRotor}</button>
-            <button onClick={() => setPage('tail')} className="w-full p-4 font-bold font-eurostile text-white transition bg-gray-800 rounded-lg shadow-lg hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-opacity-50">{t.home.tailRotor}</button>
+const HomePage = ({ setPage, lang, setLang, t }) => {
+    const [isLangPopupOpen, setIsLangPopupOpen] = useState(false);
+    const langPopupRef = useRef(null);
+    const startYear = 2025;
+    const currentYear = new Date().getFullYear();
+    const yearString = startYear === currentYear ? startYear : `${startYear} - ${currentYear}`;
+
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (langPopupRef.current && !langPopupRef.current.contains(event.target)) {
+                setIsLangPopupOpen(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [langPopupRef]);
+
+    return (
+        <div className="relative flex flex-col items-center justify-center min-h-screen p-4 text-white bg-gray-900">
+            <img src={logo} alt="Guimbal" className="w-48 mb-4" />
+            <h1 className="text-4xl font-bold text-cyan-400 mb-2 font-eurostile">{t.home.title}</h1>
+            <p className="mb-8 text-gray-400">{t.home.subtitle}</p>
+            <div className="w-full max-w-sm space-y-4">
+                <button onClick={() => setPage('main')} className="w-full p-4 font-bold font-eurostile text-white transition bg-gray-800 rounded-lg shadow-lg hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-opacity-50">{t.home.mainRotor}</button>
+                <button onClick={() => setPage('tail')} className="w-full p-4 font-bold font-eurostile text-white transition bg-gray-800 rounded-lg shadow-lg hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-opacity-50">{t.home.tailRotor}</button>
+            </div>
+            <div className="mt-8 relative w-full max-w-xs" ref={langPopupRef}>
+                {isLangPopupOpen && (
+                    <div className="absolute bottom-full mb-2 w-full bg-gray-700 rounded-md shadow-lg overflow-hidden z-10">
+                        <div className="flex flex-col">
+                            {Object.keys(translations).map(langCode => (
+                                <button
+                                    key={langCode}
+                                    onClick={() => {
+                                        setLang(langCode);
+                                        setIsLangPopupOpen(false);
+                                    }}
+                                    className={`w-full text-left p-3 text-sm font-bold ${lang === langCode ? 'bg-cyan-600 text-white' : 'text-gray-200 hover:bg-cyan-700'}`}
+                                >
+                                    {langNames[langCode]}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                )}
+                <button 
+                    onClick={() => setIsLangPopupOpen(!isLangPopupOpen)} 
+                    className="w-full p-3 text-sm font-bold text-white bg-gray-700 rounded-md hover:bg-cyan-700 flex justify-between items-center"
+                >
+                    <span>{t.home.language}: <span className="font-extrabold">{lang.toUpperCase()}</span></span>
+                    <svg className={`w-4 h-4 transform transition-transform duration-200 ${isLangPopupOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7" /></svg>
+                </button>
+            </div>
+            <footer className="absolute bottom-4 text-xs text-gray-600">
+                &copy; {yearString} Hélicoptères Guimbal, SAS
+            </footer>
         </div>
-        <div className="mt-8 flex items-center">
-            <span className="mr-2 text-sm text-gray-400">{t.home.language}:</span>
-            <button 
-                onClick={() => setLang(lang === 'en' ? 'fr' : 'en')} 
-                className="px-4 py-2 text-sm font-bold text-white bg-gray-700 rounded-md hover:bg-cyan-700"
-            >
-                {lang.toUpperCase()}
-            </button>
-        </div>
-    </div>
-);
+    );
+};
 
 // ++ FIX: bladeConfig and mainRotorConstants moved outside the component ++
 const bladeConfig = { Yellow: 0, Green: 240, Red: 120};
@@ -822,7 +1561,7 @@ const MainRotorPage = ({ setPage, t }) => {
             return;
         } 
         
-        const correctionAngle = (phaseDeg + 180 + Phi) % 360;
+        const correctionAngle = (phaseDeg + 180 - Phi) % 360;
         const correctionWeight = amplitude * K;
         const rec = {};
         Object.keys(bladeConfig).forEach(color => {
@@ -1133,7 +1872,7 @@ const TailRotorPage = ({ setPage, t }) => {
         const REASONABLE_SLOPE = 0.05;
         const CUMBERSOME_SLOPE = 0.50;
 
-        const correctionAngle = (phaseDeg + 180 + Phi) % 360;
+        const correctionAngle = (phaseDeg + 180 - Phi) % 360;
         const correctionWeight = amplitude * K;
         const targetVector = { x: correctionWeight * Math.cos(correctionAngle * Math.PI / 180), y: correctionWeight * Math.sin(correctionAngle * Math.PI / 180) };
         const validCombos = [];
