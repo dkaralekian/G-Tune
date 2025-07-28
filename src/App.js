@@ -954,8 +954,15 @@ const calculateDirectCoefficients = (history, rotorType) => {
     if (deltaW.mag < 0.01) return { isCalculable: false };
 
     // 3. Calculate K and Phi
+    // The vibration change (DeltaV) is caused by the weight change (DeltaW).
+    // The effect of a weight is V_eff = (W.mag/K) @ (W.deg + Phi)
+    // So, DeltaV = Effect(DeltaW), which means:
+    // Mag(DeltaV) = Mag(DeltaW) / K  => K = Mag(DeltaW) / Mag(DeltaV)
+    // Angle(DeltaV) = Angle(DeltaW) + Phi => Phi = Angle(DeltaV) - Angle(DeltaW)
     const K = deltaW.mag / deltaV.mag;
-    const Phi = (deltaW.deg - deltaV.deg + 360) % 360;
+    // CORRECTION: The formula for Phi was inverted. It should be the angle of the
+    // resulting vibration vector minus the angle of the weight vector that caused it.
+    const Phi = (deltaV.deg - deltaW.deg + 360) % 360;
 
     return { K, Phi, isCalculable: true };
 };
@@ -1459,7 +1466,6 @@ const HomePage = ({ setPage, lang, setLang, t }) => {
     );
 };
 
-// ++ FIX: bladeConfig and mainRotorConstants moved outside the component ++
 const bladeConfig = { Yellow: 0, Green: 240, Red: 120};
 const mainRotorConstants = {
     constant1: { K: 15, Phi: 298 },
@@ -1485,7 +1491,6 @@ const MainRotorPage = ({ setPage, t }) => {
         actionManuallySet: false,
     };
 
-    // --- REFACTORED ATOMIC STATE ---
     const [rotorState, setRotorState] = useState({
         history: [initialStepState],
         currentStepIndex: 0,
@@ -1505,7 +1510,6 @@ const MainRotorPage = ({ setPage, t }) => {
             return { ...prevState, history: newHistory };
         });
     }, []);
-    // --- END REFACTORED STATE ---
 
     const isBalanced = useMemo(() => amplitude < 0.2 && userInput, [amplitude, userInput]);
 
@@ -1528,7 +1532,7 @@ const MainRotorPage = ({ setPage, t }) => {
         if (!directCoeffs.isCalculable || ratio === 0) {
             return methodCoeffs;
         }
-        if (ratio === 1) {
+        if (ratio === 100) { // CORRECTION: Was ratio === 1, but blendRatio is 0-100
             return { K: directCoeffs.K, Phi: directCoeffs.Phi };
         }
 
@@ -1551,47 +1555,48 @@ const MainRotorPage = ({ setPage, t }) => {
         return { K: K_final, Phi: Phi_final };
     }, [blendRatio, directCoeffs, methodCoeffs, userInput]);
 
+    // CORRECTION: The entire calculation logic is replaced to be cumulative.
+    // Instead of calculating a new "total" weight and finding the difference,
+    // this version calculates the required CHANGE directly.
     const calculateRecommendation = useCallback((K, Phi) => {
-        if (K === null || K === 0 || !userInput) {
-            updateCurrentStep({ 
+        if (K === null || K <= 0 || !userInput) {
+            updateCurrentStep({
                 calculatedCoeffs: { K, Phi },
                 recommendedChange: { Yellow: 0, Green: 0, Red: 0 },
-                actualChange: { Yellow: 0, Green: 0, Red: 0 } 
+                actualChange: { Yellow: 0, Green: 0, Red: 0 }
             });
             return;
-        } 
-        
-        const correctionAngle = (phaseDeg + 180 - Phi) % 360;
-        const correctionWeight = amplitude * K;
-        const rec = {};
+        }
+
+        // 1. Calculate the correction vector required to cancel the current vibration.
+        // Formula: Weight_grams @ Angle = (K * Vibration_IPS) @ (Vibration_Phase + 180 - Phi)
+        const correctionAngle = (phaseDeg + 180 - Phi + 360) % 360;
+        const correctionMagnitude = amplitude * K;
+
+        // 2. Distribute this single correction vector onto the three blade axes.
+        const newRecommendedChange = {};
         Object.keys(bladeConfig).forEach(color => {
-            const angleRad = (correctionAngle - bladeConfig[color]) * Math.PI / 180;
-            const weightComponent = correctionWeight * Math.cos(angleRad) * (2/3);
-            rec[color] = Math.max(0, weightComponent);
-        });
-        const changeInWeight = {};
-        Object.keys(rec).forEach(color => {
-            const needed = rec[color] - currentWeights[color];
-            const finalWeight = currentWeights[color] + needed;
-            if (finalWeight > 60) {
-              changeInWeight[color] = 60 - currentWeights[color];
-            } else {
-              changeInWeight[color] = roundToHalf(needed);
-            }
+            const angleDiffRad = (correctionAngle - bladeConfig[color]) * Math.PI / 180;
+            // The component of the correction vector on this blade's axis.
+            // The 2/3 factor is correct for distributing a vector onto 3 axes at 120 degrees.
+            const weightComponent = correctionMagnitude * Math.cos(angleDiffRad) * (2 / 3);
+            newRecommendedChange[color] = roundToHalf(weightComponent);
         });
 
-        const newChanges = { 
+        const newChanges = {
             calculatedCoeffs: { K, Phi },
-            recommendedChange: changeInWeight 
+            recommendedChange: newRecommendedChange
         };
 
+        // 3. If the user hasn't manually altered the "Your Action" fields,
+        // update them with the new recommendation.
         if (!actionManuallySet) {
-            newChanges.actualChange = changeInWeight;
+            newChanges.actualChange = newRecommendedChange;
         }
 
         updateCurrentStep(newChanges);
 
-    }, [amplitude, phaseDeg, currentWeights, actionManuallySet, userInput, updateCurrentStep]); // ++ FIX: Removed 'bladeConfig'
+    }, [amplitude, phaseDeg, userInput, actionManuallySet, updateCurrentStep]);
 
     useEffect(() => {
         if (userInput && finalCoeffs.K !== null) {
@@ -1603,7 +1608,9 @@ const MainRotorPage = ({ setPage, t }) => {
     const totalFinalWeights = useMemo(() => {
         const total = {};
         Object.keys(currentWeights).forEach(color => {
+            // The new total is simply the current weight plus the actioned change.
             const sum = currentWeights[color] + (actualChange[color] || 0);
+            // Clamp the final value between 0g and 60g.
             const final = roundToHalf(Math.max(0, sum));
             total[color] = Math.min(60, final);
         });
@@ -1766,7 +1773,6 @@ const MainRotorPage = ({ setPage, t }) => {
     );
 };
 
-// ++ FIX: tailRotorConstants moved outside the component ++
 const tailRotorConstants = {
     constant1: { K: 2, Phi: 310 },
     constant2: { K: 2.8, Phi: 302 },
@@ -1794,7 +1800,6 @@ const TailRotorPage = ({ setPage, t }) => {
         calculatedCoeffs: { K: null, Phi: null },
     };
 
-    // --- REFACTORED ATOMIC STATE ---
     const [rotorState, setRotorState] = useState({
         history: [initialStepState],
         currentStepIndex: 0,
@@ -1811,7 +1816,6 @@ const TailRotorPage = ({ setPage, t }) => {
             return { ...prevState, history: newHistory };
         });
     }, []);
-    // --- END REFACTORED STATE ---
 
     const screwAngles = useMemo(() => Array.from({length: screwCount}, (_, i) => (360 / screwCount) * i + (360 / (2 * screwCount))), [screwCount]);
     const isBalanced = useMemo(() => amplitude < 0.2 && userInput, [amplitude, userInput]);
@@ -1858,8 +1862,9 @@ const TailRotorPage = ({ setPage, t }) => {
         return { K: K_final, Phi: Phi_final };
     }, [blendRatio, directCoeffs, methodCoeffs, userInput]);
 
+    // CORRECTION: The tail rotor calculation is now cumulative.
     const calculateMultiScrewRecommendation = useCallback((K, Phi) => {
-        if (K === null || K === 0 || !userInput) {
+        if (K === null || K <= 0 || !userInput) {
             updateCurrentStep({
                 calculatedCoeffs: { K, Phi },
                 recommendedWashers: Array(screwCount).fill({ small: 0, large: 0 }),
@@ -1868,13 +1873,35 @@ const TailRotorPage = ({ setPage, t }) => {
             return;
         }
 
+        // 1. Calculate the vector sum of the weights CURRENTLY installed.
+        let currentWeightX = 0;
+        let currentWeightY = 0;
+        currentWashers.forEach((washers, i) => {
+            const weight = (washers.small * smallWasherWeight) + (washers.large * largeWasherWeight);
+            if (weight > 0) {
+                const angleRad = screwAngles[i] * Math.PI / 180;
+                currentWeightX += weight * Math.cos(angleRad);
+                currentWeightY += weight * Math.sin(angleRad);
+            }
+        });
+
+        // 2. Calculate the CHANGE vector needed to cancel the current vibration.
+        const correctionAngle = (phaseDeg + 180 - Phi + 360) % 360;
+        const correctionWeight = amplitude * K;
+        const changeVector = toCartesian(correctionWeight, correctionAngle);
+        
+        // 3. The new TOTAL target vector is the sum of what's there plus the required change.
+        const targetVector = {
+            x: currentWeightX + changeVector.x,
+            y: currentWeightY + changeVector.y,
+        };
+
+        // --- The rest of the algorithm now works to find a washer set to match this new cumulative target ---
+
         const CUMBERSOME_THRESHOLD = 5;
         const REASONABLE_SLOPE = 0.05;
         const CUMBERSOME_SLOPE = 0.50;
-
-        const correctionAngle = (phaseDeg + 180 - Phi) % 360;
-        const correctionWeight = amplitude * K;
-        const targetVector = { x: correctionWeight * Math.cos(correctionAngle * Math.PI / 180), y: correctionWeight * Math.sin(correctionAngle * Math.PI / 180) };
+        
         const validCombos = [];
         for (let l = 0; l <= 2; l++) {
             for (let s = 0; s <= 3; s++) {
@@ -1940,7 +1967,7 @@ const TailRotorPage = ({ setPage, t }) => {
             actualWashers: bestSolution.washers
         });
 
-    }, [amplitude, phaseDeg, screwAngles, userInput, updateCurrentStep]);
+    }, [amplitude, phaseDeg, screwAngles, userInput, updateCurrentStep, currentWashers]);
 
     useEffect(() => {
         if(userInput && finalCoeffs.K !== null) {
