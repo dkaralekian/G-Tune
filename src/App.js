@@ -962,7 +962,7 @@ const calculateDirectCoefficients = (history, rotorType) => {
     const K = deltaW.mag / deltaV.mag;
     // CORRECTION: The formula for Phi was inverted. It should be the angle of the
     // resulting vibration vector minus the angle of the weight vector that caused it.
-    const Phi = (deltaV.deg - deltaW.deg + 360) % 360;
+    const Phi = (deltaW.deg - deltaV.deg) % 360;
 
     return { K, Phi, isCalculable: true };
 };
