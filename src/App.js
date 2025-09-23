@@ -1726,7 +1726,7 @@ const MainRotorPage = ({ setPage, t }) => {
         }
         updateCurrentStep(newChanges);
 
-    }, [amplitude, phaseDeg, userInput, actionManuallySet, updateCurrentStep, currentWeights]);
+    }, [amplitude, phaseDeg, userInput, actionManuallySet, updateCurrentStep, currentWeights, actualChange]);
 
 
     useEffect(() => {
