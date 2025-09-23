@@ -1686,15 +1686,28 @@ const MainRotorPage = ({ setPage, t }) => {
 
 
     const totalFinalWeights = useMemo(() => {
-        const total = {};
+        const intermediateTotal = {};
         Object.keys(currentWeights).forEach(color => {
-            // The new total is simply the current weight plus the actioned change.
             const sum = currentWeights[color] + (actualChange[color] || 0);
-            // Clamp the final value between 0g and 60g.
             const final = roundToHalf(Math.max(0, sum));
-            total[color] = Math.min(60, final);
+            intermediateTotal[color] = Math.min(60, final);
         });
-        return total;
+
+        // --- NEW LOGIC TO REMOVE SUPERFLUOUS WEIGHT ---
+        // Find the minimum weight that is common to all three blades
+        const { Yellow, Green, Red } = intermediateTotal;
+        const minWeight = Math.min(Yellow, Green, Red);
+
+        // Subtract this common weight from all blades.
+        // This preserves the balance vector but minimizes total weight.
+        // At least one blade will now be 0.
+        const finalTotal = {
+            Yellow: roundToHalf(Yellow - minWeight),
+            Green: roundToHalf(Green - minWeight),
+            Red: roundToHalf(Red - minWeight),
+        };
+        
+        return finalTotal;
     }, [currentWeights, actualChange]);
 
     const handleNextStep = () => {
