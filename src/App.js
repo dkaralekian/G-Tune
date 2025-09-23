@@ -1555,9 +1555,47 @@ const MainRotorPage = ({ setPage, t }) => {
         return { K: K_final, Phi: Phi_final };
     }, [blendRatio, directCoeffs, methodCoeffs, userInput]);
 
-    // CORRECTION: The entire calculation logic is replaced to be cumulative.
-    // Instead of calculating a new "total" weight and finding the difference,
-    // this version calculates the required CHANGE directly.
+
+    // *** NEW HELPER FUNCTIONS FOR CONSTRAINED SOLVER ***
+
+    // General 2-blade solver: Solves w1*V1 + w2*V2 = V_target
+    // V_target_cart is {x, y}, angles are in degrees. Returns { w1, w2 }
+    const solveTwoBlade = (V_target_cart, angle1_deg, angle2_deg) => {
+        const a1 = angle1_deg * Math.PI / 180;
+        const a2 = angle2_deg * Math.PI / 180;
+        const V_x = V_target_cart.x;
+        const V_y = V_target_cart.y;
+
+        // Determinant is sin(a2 - a1)
+        const det = Math.cos(a1) * Math.sin(a2) - Math.sin(a1) * Math.cos(a2); 
+        
+        // Handle parallel blades (shouldn't happen in a 3-blade system)
+        if (Math.abs(det) < 1e-9) {
+            return null;
+        }
+
+        const w1 = (V_x * Math.sin(a2) - V_y * Math.cos(a2)) / det;
+        const w2 = (V_y * Math.cos(a1) - V_x * Math.sin(a1)) / det;
+        
+        return { w1, w2 };
+    };
+    
+    // General 1-blade solver: Solves w1*V1 = V_target (projects V_target onto V1)
+    // Returns scalar weight w1
+    const solveOneBlade = (V_target_cart, angle1_deg) => {
+        const a1 = angle1_deg * Math.PI / 180;
+        const V_mag = Math.sqrt(V_target_cart.x**2 + V_target_cart.y**2);
+        if (V_mag < 1e-9) return 0;
+        
+        const V_angle = Math.atan2(V_target_cart.y, V_target_cart.x);
+        
+        // Project V_target onto the blade axis
+        const w1 = V_mag * Math.cos(V_angle - a1);
+        return w1;
+    };
+
+
+    // *** NEW CONSTRAINED SOLVER LOGIC ***
     const calculateRecommendation = useCallback((K, Phi) => {
         if (K === null || K <= 0 || !userInput) {
             updateCurrentStep({
@@ -1568,35 +1606,128 @@ const MainRotorPage = ({ setPage, t }) => {
             return;
         }
 
-        // 1. Calculate the correction vector required to cancel the current vibration.
-        // Formula: Weight_grams @ Angle = (K * Vibration_IPS) @ (Vibration_Phase + 180 - Phi)
+        // 1. Define ideal correction vector (what we want to achieve)
         const correctionAngle = (phaseDeg + 180 - Phi + 360) % 360;
         const correctionMagnitude = amplitude * K;
+        const V_correct_cart = toCartesian(correctionMagnitude, correctionAngle);
 
-        // 2. Distribute this single correction vector onto the three blade axes.
-        const newRecommendedChange = {};
+        // 2. Define blade constraints
+        const MAX_BLADE_WEIGHT = 60.0;
+        const constraints = {};
         Object.keys(bladeConfig).forEach(color => {
-            const angleDiffRad = (correctionAngle - bladeConfig[color]) * Math.PI / 180;
-            // The component of the correction vector on this blade's axis.
-            // The 2/3 factor is correct for distributing a vector onto 3 axes at 120 degrees.
-            const weightComponent = correctionMagnitude * Math.cos(angleDiffRad) * (2 / 3);
-            newRecommendedChange[color] = roundToHalf(weightComponent);
+            const current = currentWeights[color] || 0;
+            constraints[color] = {
+                min: -current, // Min change is to remove all current weight
+                max: MAX_BLADE_WEIGHT - current, // Max change is to add up to 60g
+                angle: bladeConfig[color]
+            };
         });
 
-        const newChanges = {
-            calculatedCoeffs: { K, Phi },
-            recommendedChange: newRecommendedChange
-        };
+        // 3. Calculate initial ideal components using (2/3) projection
+        // This is our "best guess" that distributes the load
+        const idealChanges = {};
+        Object.keys(bladeConfig).forEach(color => {
+            const angleDiffRad = (correctionAngle - constraints[color].angle) * Math.PI / 180;
+            const weightComponent = correctionMagnitude * Math.cos(angleDiffRad) * (2 / 3);
+            idealChanges[color] = weightComponent;
+        });
 
-        // 3. If the user hasn't manually altered the "Your Action" fields,
-        // update them with the new recommendation.
-        if (!actionManuallySet) {
-            newChanges.actualChange = newRecommendedChange;
+        // 4. Apply constraints to get "first-pass" solution
+        const firstPassChanges = {};
+        const availableBlades = [];
+        let V_applied_x = 0;
+        let V_applied_y = 0;
+
+        Object.keys(bladeConfig).forEach(color => {
+            const ideal = idealChanges[color];
+            const { min, max, angle } = constraints[color];
+            
+            // Clamp the ideal change to what's physically possible
+            let clampedChange = Math.max(min, Math.min(ideal, max));
+            firstPassChanges[color] = clampedChange;
+            
+            // Check if blade is *not* at its limit (use epsilon for float safety)
+            if (clampedChange > min + 1e-6 && clampedChange < max - 1e-6) {
+                availableBlades.push(color);
+            }
+            
+            // Sum the vector for this clamped change
+            const v = toCartesian(clampedChange, angle);
+            V_applied_x += v.x;
+            V_applied_y += v.y;
+        });
+
+        // 5. Calculate the remaining error vector
+        // This is the part of the correction that the clamped blades couldn't provide
+        const V_error_cart = {
+            x: V_correct_cart.x - V_applied_x,
+            y: V_correct_cart.y - V_applied_y,
+        };
+        const V_error_polar = toPolar(V_error_cart.x, V_error_cart.y);
+
+        // If error is negligible, our first pass was good enough
+        if (V_error_polar.mag < 0.01) { 
+            const finalRec = {};
+            Object.keys(firstPassChanges).forEach(c => finalRec[c] = roundToHalf(firstPassChanges[c]));
+            
+            updateCurrentStep({
+                calculatedCoeffs: { K, Phi },
+                recommendedChange: finalRec,
+                actualChange: actionManuallySet ? actualChange : finalRec
+            });
+            return;
         }
 
+        // 6. Redistribute the error onto the available (non-clamped) blades
+        let finalChanges = { ...firstPassChanges };
+
+        if (availableBlades.length === 2) {
+            // Solve the error using the two available blades
+            const [b1, b2] = availableBlades;
+            const { angle: a1 } = constraints[b1];
+            const { angle: a2 } = constraints[b2];
+
+            const solution = solveTwoBlade(V_error_cart, a1, a2);
+            
+            if (solution) {
+                // Add the redistribution change to the first-pass change
+                finalChanges[b1] += solution.w1;
+                finalChanges[b2] += solution.w2;
+            }
+
+        } else if (availableBlades.length === 1) {
+            // Project the entire error onto the one available blade
+            const [b1] = availableBlades;
+            const { angle: a1 } = constraints[b1];
+            
+            const solution_w1 = solveOneBlade(V_error_cart, a1);
+            finalChanges[b1] += solution_w1;
+        }
+        // If 0 or 3 available blades (3 shouldn't happen if error > 0),
+        // we can't redistribute. The first pass is the best we can do.
+
+        // 7. Final clamp & round.
+        // The redistribution might have pushed a blade to its limit *again*.
+        // This final hard clamp is the "best effort" solution.
+        const finalRecommendedChange = {};
+        Object.keys(bladeConfig).forEach(color => {
+            const { min, max } = constraints[color];
+            let finalChange = Math.max(min, Math.min(finalChanges[color], max));
+            finalRecommendedChange[color] = roundToHalf(finalChange);
+        });
+
+        // 8. Update state
+        const newChanges = {
+            calculatedCoeffs: { K, Phi },
+            recommendedChange: finalRecommendedChange
+        };
+        if (!actionManuallySet) {
+            newChanges.actualChange = finalRecommendedChange;
+        }
         updateCurrentStep(newChanges);
 
-    }, [amplitude, phaseDeg, userInput, actionManuallySet, updateCurrentStep]);
+    }, [amplitude, phaseDeg, userInput, actionManuallySet, updateCurrentStep, currentWeights]);
+
 
     useEffect(() => {
         if (userInput && finalCoeffs.K !== null) {
