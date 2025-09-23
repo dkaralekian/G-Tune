@@ -1544,7 +1544,7 @@ const MainRotorPage = ({ setPage, t }) => {
     };
 
 
-// *** CONSTRAINED SOLVER LOGIC (v3 - WITH OPTIMIZATION) ***
+// *** CONSTRAINED SOLVER LOGIC (v4 - LINTER FIX) ***
     const calculateRecommendation = useCallback((K, Phi) => {
         if (K === null || K <= 0 || !userInput) {
             updateCurrentStep({
@@ -1607,10 +1607,10 @@ const MainRotorPage = ({ setPage, t }) => {
             y: V_correct_cart.y - V_applied_y,
         };
         const V_error_polar = toPolar(V_error_cart.x, V_error_cart.y);
-
-        // 6. Redistribute the error onto the available (non-clamped) blades
+        
         let finalUnoptimizedChanges = { ...firstPassChanges };
 
+        // 6. Redistribute the error onto the available (non-clamped) blades
         if (V_error_polar.mag > 0.01) { // Only run if error is not negligible
             if (availableBlades.length === 2) {
                 const [b1, b2] = availableBlades;
@@ -1637,7 +1637,7 @@ const MainRotorPage = ({ setPage, t }) => {
             finalClampedChanges[color] = finalChange; // Still high precision
         });
         
-        // --- NEW OPTIMIZATION STEP ---
+        // --- OPTIMIZATION STEP ---
         // Calculate the intermediate total based on this clamped, un-optimized change
         const intermediateTotal = {};
         Object.keys(currentWeights).forEach(color => {
@@ -1662,9 +1662,10 @@ const MainRotorPage = ({ setPage, t }) => {
             Green: roundToHalf(finalTotal.Green - currentWeights.Green),
             Red: roundToHalf(finalTotal.Red - currentWeights.Red)
         };
-        // --- END NEW OPTIMIZATION STEP ---
+        // --- END OPTIMIZATION STEP ---
 
         // 8. Update state
+        // This block is now consistent and no longer reads 'actualChange'
         const newChanges = {
             calculatedCoeffs: { K, Phi },
             recommendedChange: finalRecommendedChange // This is now the optimized change
@@ -1674,7 +1675,7 @@ const MainRotorPage = ({ setPage, t }) => {
         }
         updateCurrentStep(newChanges);
 
-    }, [amplitude, phaseDeg, userInput, actionManuallySet, updateCurrentStep, currentWeights, actualChange]);
+    }, [amplitude, phaseDeg, userInput, actionManuallySet, updateCurrentStep, currentWeights]); // <-- 'actualChange' is REMOVED
 
     useEffect(() => {
         if (userInput && finalCoeffs.K !== null) {
