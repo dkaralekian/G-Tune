@@ -14,6 +14,7 @@ import {
     tail_rotor_Phi_lookup
 } from './data/lookupTables.js';
 
+// This is no longer used by default, but kept in case 'lookup' mode is ever restored
 const lookupTables = {
     main: { K: main_rotor_K_lookup, Phi: main_rotor_Phi_lookup },
     tail: { K: tail_rotor_K_lookup, Phi: tail_rotor_Phi_lookup },
@@ -36,7 +37,7 @@ const translations = {
             rotorIsBalanced: 'Rotor is Balanced!',
             vibrationBelowThreshold: 'Vibration amplitude ({amplitude} IPS) is below the 0.2 IPS threshold.',
             calculationMethod: 'Calculation Method',
-            lookupTable: 'Decision Trees',
+            lookupTable: 'Constant 0 (K=20, Φ=280)', // CHANGED
             constant1: 'Constant 1 (K=15, Φ=298)',
             constant2: 'Constant 2 (K=22, Φ=270)',
             vibrationMeasurement: 'Vibration Measurement',
@@ -58,9 +59,9 @@ const translations = {
             generateReport: 'Generate PDF Report',
             interpolatedValues: 'K={kValue}, Phi={phiValue}°',
             plotTitle: 'Balancing Plot',
-            calculationBlend: 'Calculation Blend: {blendRatio}% Direct / {inverseBlendRatio}% Method',
-            method: 'Method',
-            direct: 'Direct',
+            calculationBlend: 'Calculation Blend: {blendRatio}% Learning / {inverseBlendRatio}% Constant', // CHANGED
+            method: 'Constant', // CHANGED
+            direct: 'Learning', // CHANGED
             directCalculated: 'Directly Calculated: K={kValue}, Phi={phiValue}°'
         },
         tailRotor: {
@@ -70,7 +71,7 @@ const translations = {
             rotorIsBalanced: 'Rotor is Balanced!',
             vibrationBelowThreshold: 'Vibration amplitude ({amplitude} IPS) is below the 0.2 IPS threshold.',
             calculationMethod: 'Calculation Method',
-            lookupTable: 'Decision Trees',
+            lookupTable: 'Constant 0 (K=2.2, Φ=305)', // CHANGED
             constant1: 'Constant 1 (K=2, Φ=310)',
             constant2: 'Constant 2 (K=2.8, Φ=302)',
             vibrationMeasurement: 'Vibration Measurement',
@@ -91,9 +92,9 @@ const translations = {
             generateReport: 'Generate PDF Report',
             interpolatedValues: 'K={kValue}, Phi={phiValue}°',
             plotTitle: 'Balancing Plot',
-            calculationBlend: 'Calculation Blend: {blendRatio}% Direct / {inverseBlendRatio}% Method',
-            method: 'Method',
-            direct: 'Direct',
+            calculationBlend: 'Calculation Blend: {blendRatio}% Learning / {inverseBlendRatio}% Constant', // CHANGED
+            method: 'Constant', // CHANGED
+            direct: 'Learning', // CHANGED
             directCalculated: 'Directly Calculated: K={kValue}, Phi={phiValue}°'
         }
     },
@@ -112,7 +113,7 @@ const translations = {
             rotorIsBalanced: 'Le rotor est équilibré !',
             vibrationBelowThreshold: 'L\'amplitude des vibrations ({amplitude} IPS) est inférieure au seuil de 0.2 IPS.',
             calculationMethod: 'Méthode de Calcul',
-            lookupTable: 'Arbres de decision',
+            lookupTable: 'Constante 0 (K=20, Φ=280)', // CHANGED
             constant1: 'Constante 1 (K=15, Φ=298)',
             constant2: 'Constante 2 (K=22, Φ=270)',
             vibrationMeasurement: 'Mesure des Vibrations',
@@ -134,9 +135,9 @@ const translations = {
             generateReport: 'Générer un Rapport PDF',
             interpolatedValues: 'K={kValue}, Phi={phiValue}°',
             plotTitle: 'Graphique d\'équilibrage',
-            calculationBlend: 'Mélange de Calcul : {blendRatio}% Direct / {inverseBlendRatio}% Méthode',
-            method: 'Méthode',
-            direct: 'Direct',
+            calculationBlend: 'Mélange de Calcul : {blendRatio}% Apprentissage / {inverseBlendRatio}% Constante', // CHANGED
+            method: 'Constante', // CHANGED
+            direct: 'Apprentissage', // CHANGED
             directCalculated: 'Calcul Direct : K={kValue}, Phi={phiValue}°'
         },
         tailRotor: {
@@ -146,7 +147,7 @@ const translations = {
             rotorIsBalanced: 'Le rotor est équilibré !',
             vibrationBelowThreshold: 'L\'amplitude des vibrations ({amplitude} IPS) est inférieure au seuil de 0.2 IPS.',
             calculationMethod: 'Méthode de Calcul',
-            lookupTable: 'Arbres de decision',
+            lookupTable: 'Constante 0 (K=2.2, Φ=305)', // CHANGED
             constant1: 'Constante 1 (K=2, Φ=310)',
             constant2: 'Constante 2 (K=2.8, Φ=302)',
             vibrationMeasurement: 'Mesure des Vibrations',
@@ -167,9 +168,9 @@ const translations = {
             generateReport: 'Générer un Rapport PDF',
             interpolatedValues: 'K={kValue}, Phi={phiValue}°',
             plotTitle: 'Graphique d\'équilibrage',
-            calculationBlend: 'Mélange de Calcul : {blendRatio}% Direct / {inverseBlendRatio}% Méthode',
-            method: 'Méthode',
-            direct: 'Direct',
+            calculationBlend: 'Mélange de Calcul : {blendRatio}% Apprentissage / {inverseBlendRatio}% Constante', // CHANGED
+            method: 'Constante', // CHANGED
+            direct: 'Apprentissage', // CHANGED
             directCalculated: 'Calcul Direct : K={kValue}, Phi={phiValue}°'
         }
     },
@@ -188,7 +189,7 @@ const translations = {
             rotorIsBalanced: '¡Rotor equilibrado!',
             vibrationBelowThreshold: 'La amplitud de la vibración ({amplitude} IPS) está por debajo del umbral de 0.2 IPS.',
             calculationMethod: 'Método de Cálculo',
-            lookupTable: 'Árboles de Decisión',
+            lookupTable: 'Constante 0 (K=20, Φ=280)', // CHANGED
             constant1: 'Constante 1 (K=15, Φ=298)',
             constant2: 'Constante 2 (K=22, Φ=270)',
             vibrationMeasurement: 'Medición de Vibraciones',
@@ -210,9 +211,9 @@ const translations = {
             generateReport: 'Generar Informe PDF',
             interpolatedValues: 'K={kValue}, Phi={phiValue}°',
             plotTitle: 'Gráfico de Equilibrado',
-            calculationBlend: 'Mezcla de Cálculo: {blendRatio}% Directo / {inverseBlendRatio}% Método',
-            method: 'Método',
-            direct: 'Directo',
+            calculationBlend: 'Mezcla de Cálculo: {blendRatio}% Aprendizaje / {inverseBlendRatio}% Constante', // CHANGED
+            method: 'Constante', // CHANGED
+            direct: 'Aprendizaje', // CHANGED
             directCalculated: 'Calculado Directamente: K={kValue}, Phi={phiValue}°'
         },
         tailRotor: {
@@ -222,7 +223,7 @@ const translations = {
             rotorIsBalanced: '¡Rotor equilibrado!',
             vibrationBelowThreshold: 'La amplitud de la vibración ({amplitude} IPS) está por debajo del umbral de 0.2 IPS.',
             calculationMethod: 'Método de Cálculo',
-            lookupTable: 'Árboles de Decisión',
+            lookupTable: 'Constante 0 (K=2.2, Φ=305)', // CHANGED
             constant1: 'Constante 1 (K=2, Φ=310)',
             constant2: 'Constante 2 (K=2.8, Φ=302)',
             vibrationMeasurement: 'Medición de Vibraciones',
@@ -243,9 +244,9 @@ const translations = {
             generateReport: 'Generar Informe PDF',
             interpolatedValues: 'K={kValue}, Phi={phiValue}°',
             plotTitle: 'Gráfico de Equilibrado',
-            calculationBlend: 'Mezcla de Cálculo: {blendRatio}% Directo / {inverseBlendRatio}% Método',
-            method: 'Método',
-            direct: 'Directo',
+            calculationBlend: 'Mezcla de Cálculo: {blendRatio}% Aprendizaje / {inverseBlendRatio}% Constante', // CHANGED
+            method: 'Constante', // CHANGED
+            direct: 'Aprendizaje', // CHANGED
             directCalculated: 'Calculado Directamente: K={kValue}, Phi={phiValue}°'
         }
     },
@@ -264,7 +265,7 @@ const translations = {
             rotorIsBalanced: 'Rotor ist ausgewuchtet!',
             vibrationBelowThreshold: 'Vibrationsamplitude ({amplitude} IPS) liegt unter dem Schwellenwert von 0,2 IPS.',
             calculationMethod: 'Berechnungsmethode',
-            lookupTable: 'Entscheidungsbäume',
+            lookupTable: 'Konstante 0 (K=20, Φ=280)', // CHANGED
             constant1: 'Konstante 1 (K=15, Φ=298)',
             constant2: 'Konstante 2 (K=22, Φ=270)',
             vibrationMeasurement: 'Vibrationsmessung',
@@ -286,9 +287,9 @@ const translations = {
             generateReport: 'PDF-Bericht erstellen',
             interpolatedValues: 'K={kValue}, Phi={phiValue}°',
             plotTitle: 'Auswuchtdiagramm',
-            calculationBlend: 'Berechnungsmischung: {blendRatio}% Direkt / {inverseBlendRatio}% Methode',
-            method: 'Methode',
-            direct: 'Direkt',
+            calculationBlend: 'Berechnungsmischung: {blendRatio}% Lernen / {inverseBlendRatio}% Konstante', // CHANGED
+            method: 'Konstante', // CHANGED
+            direct: 'Lernen', // CHANGED
             directCalculated: 'Direkt berechnet: K={kValue}, Phi={phiValue}°'
         },
         tailRotor: {
@@ -298,7 +299,7 @@ const translations = {
             rotorIsBalanced: 'Rotor ist ausgewuchtet!',
             vibrationBelowThreshold: 'Vibrationsamplitude ({amplitude} IPS) liegt unter dem Schwellenwert von 0,2 IPS.',
             calculationMethod: 'Berechnungsmethode',
-            lookupTable: 'Entscheidungsbäume',
+            lookupTable: 'Konstante 0 (K=2.2, Φ=305)', // CHANGED
             constant1: 'Konstante 1 (K=2, Φ=310)',
             constant2: 'Konstante 2 (K=2.8, Φ=302)',
             vibrationMeasurement: 'Vibrationsmessung',
@@ -319,9 +320,9 @@ const translations = {
             generateReport: 'PDF-Bericht erstellen',
             interpolatedValues: 'K={kValue}, Phi={phiValue}°',
             plotTitle: 'Auswuchtdiagramm',
-            calculationBlend: 'Berechnungsmischung: {blendRatio}% Direkt / {inverseBlendRatio}% Methode',
-            method: 'Methode',
-            direct: 'Direkt',
+            calculationBlend: 'Berechnungsmischung: {blendRatio}% Lernen / {inverseBlendRatio}% Konstante', // CHANGED
+            method: 'Konstante', // CHANGED
+            direct: 'Lernen', // CHANGED
             directCalculated: 'Direkt berechnet: K={kValue}, Phi={phiValue}°'
         }
     },
@@ -340,7 +341,7 @@ const translations = {
             rotorIsBalanced: 'Rotore bilanciato!',
             vibrationBelowThreshold: 'L\'ampiezza della vibrazione ({amplitude} IPS) è inferiore alla soglia di 0.2 IPS.',
             calculationMethod: 'Metodo di Calcolo',
-            lookupTable: 'Alberi Decisionali',
+            lookupTable: 'Costante 0 (K=20, Φ=280)', // CHANGED
             constant1: 'Costante 1 (K=15, Φ=298)',
             constant2: 'Costante 2 (K=22, Φ=270)',
             vibrationMeasurement: 'Misurazione Vibrazioni',
@@ -362,9 +363,9 @@ const translations = {
             generateReport: 'Genera Report PDF',
             interpolatedValues: 'K={kValue}, Phi={phiValue}°',
             plotTitle: 'Grafico di Bilanciamento',
-            calculationBlend: 'Misto di Calcolo: {blendRatio}% Diretto / {inverseBlendRatio}% Metodo',
-            method: 'Metodo',
-            direct: 'Diretto',
+            calculationBlend: 'Misto di Calcolo: {blendRatio}% Apprendimento / {inverseBlendRatio}% Costante', // CHANGED
+            method: 'Costante', // CHANGED
+            direct: 'Apprendimento', // CHANGED
             directCalculated: 'Calcolato Direttamente: K={kValue}, Phi={phiValue}°'
         },
         tailRotor: {
@@ -374,7 +375,7 @@ const translations = {
             rotorIsBalanced: 'Rotore bilanciato!',
             vibrationBelowThreshold: 'L\'ampiezza della vibrazione ({amplitude} IPS) è inferiore alla soglia di 0.2 IPS.',
             calculationMethod: 'Metodo di Calcolo',
-            lookupTable: 'Alberi Decisionali',
+            lookupTable: 'Costante 0 (K=2.2, Φ=305)', // CHANGED
             constant1: 'Costante 1 (K=2, Φ=310)',
             constant2: 'Costante 2 (K=2.8, Φ=302)',
             vibrationMeasurement: 'Misurazione Vibrazioni',
@@ -395,9 +396,9 @@ const translations = {
             generateReport: 'Genera Report PDF',
             interpolatedValues: 'K={kValue}, Phi={phiValue}°',
             plotTitle: 'Grafico di Bilanciamento',
-            calculationBlend: 'Misto di Calcolo: {blendRatio}% Diretto / {inverseBlendRatio}% Metodo',
-            method: 'Metodo',
-            direct: 'Diretto',
+            calculationBlend: 'Misto di Calcolo: {blendRatio}% Apprendimento / {inverseBlendRatio}% Costante', // CHANGED
+            method: 'Costante', // CHANGED
+            direct: 'Apprendimento', // CHANGED
             directCalculated: 'Calcolato Direttamente: K={kValue}, Phi={phiValue}°'
         }
     },
@@ -416,7 +417,7 @@ const translations = {
             rotorIsBalanced: '旋翼已平衡！',
             vibrationBelowThreshold: '振动幅度 ({amplitude} IPS) 低于 0.2 IPS 阈值。',
             calculationMethod: '计算方法',
-            lookupTable: '决策树',
+            lookupTable: '常数 0 (K=20, Φ=280)', // CHANGED
             constant1: '常数 1 (K=15, Φ=298)',
             constant2: '常数 2 (K=22, Φ=270)',
             vibrationMeasurement: '振动测量',
@@ -438,9 +439,9 @@ const translations = {
             generateReport: '生成PDF报告',
             interpolatedValues: 'K={kValue}, Phi={phiValue}°',
             plotTitle: '平衡图',
-            calculationBlend: '计算混合: {blendRatio}% 直接 / {inverseBlendRatio}% 方法',
-            method: '方法',
-            direct: '直接',
+            calculationBlend: '计算混合: {blendRatio}% 学习 / {inverseBlendRatio}% 常数', // CHANGED
+            method: '常数', // CHANGED
+            direct: '学习', // CHANGED
             directCalculated: '直接计算: K={kValue}, Phi={phiValue}°'
         },
         tailRotor: {
@@ -450,7 +451,7 @@ const translations = {
             rotorIsBalanced: '旋翼已平衡！',
             vibrationBelowThreshold: '振动幅度 ({amplitude} IPS) 低于 0.2 IPS 阈值。',
             calculationMethod: '计算方法',
-            lookupTable: '决策树',
+            lookupTable: '常数 0 (K=2.2, Φ=305)', // CHANGED
             constant1: '常数 1 (K=2, Φ=310)',
             constant2: '常数 2 (K=2.8, Φ=302)',
             vibrationMeasurement: '振动测量',
@@ -471,9 +472,9 @@ const translations = {
             generateReport: '生成PDF报告',
             interpolatedValues: 'K={kValue}, Phi={phiValue}°',
             plotTitle: '平衡图',
-            calculationBlend: '计算混合: {blendRatio}% 直接 / {inverseBlendRatio}% 方法',
-            method: '方法',
-            direct: '直接',
+            calculationBlend: '计算混合: {blendRatio}% 学习 / {inverseBlendRatio}% 常数', // CHANGED
+            method: '常数', // CHANGED
+            direct: '学习', // CHANGED
             directCalculated: '直接计算: K={kValue}, Phi={phiValue}°'
         }
     },
@@ -492,7 +493,7 @@ const translations = {
             rotorIsBalanced: 'Ռոտորը հավասարակշռված է։',
             vibrationBelowThreshold: 'Թրթռման ամպլիտուդը ({amplitude} IPS) 0.2 IPS շեմից ցածր է։',
             calculationMethod: 'Հաշվարկման մեթոդ',
-            lookupTable: 'Որոշումների ծառեր',
+            lookupTable: 'Հաստատուն 0 (K=20, Φ=280)', // CHANGED
             constant1: 'Հաստատուն 1 (K=15, Φ=298)',
             constant2: 'Հաստատուն 2 (K=22, Φ=270)',
             vibrationMeasurement: 'Թրթռման չափում',
@@ -514,9 +515,9 @@ const translations = {
             generateReport: 'Ստեղծել PDF հաշվետվություն',
             interpolatedValues: 'K={kValue}, Phi={phiValue}°',
             plotTitle: 'Հավասարակշռման գծապատկեր',
-            calculationBlend: 'Հաշվարկի խառնուրդ՝ {blendRatio}% Ուղիղ / {inverseBlendRatio}% Մեթոդ',
-            method: 'Մեթոդ',
-            direct: 'Ուղիղ',
+            calculationBlend: 'Հաշվարկի խառնուրդ՝ {blendRatio}% Սովորել / {inverseBlendRatio}% Հաստատուն', // CHANGED
+            method: 'Հաստատուն', // CHANGED
+            direct: 'Սովորել', // CHANGED
             directCalculated: 'Ուղղակիորեն հաշվարկված՝ K={kValue}, Phi={phiValue}°'
         },
         tailRotor: {
@@ -526,7 +527,7 @@ const translations = {
             rotorIsBalanced: 'Ռոտորը հավասարակշռված է։',
             vibrationBelowThreshold: 'Թրթռման ամպլիտուդը ({amplitude} IPS) 0.2 IPS շեմից ցածր է։',
             calculationMethod: 'Հաշվարկման մեթոդ',
-            lookupTable: 'Որոշումների ծառեր',
+            lookupTable: 'Հաստատուն 0 (K=2.2, Φ=305)', // CHANGED
             constant1: 'Հաստատուն 1 (K=2, Φ=310)',
             constant2: 'Հաստատուն 2 (K=2.8, Φ=302)',
             vibrationMeasurement: 'Թրթռման չափում',
@@ -547,9 +548,9 @@ const translations = {
             generateReport: 'Ստեղծել PDF հաշվետվություն',
             interpolatedValues: 'K={kValue}, Phi={phiValue}°',
             plotTitle: 'Հավասարակշռման գծապատկեր',
-            calculationBlend: 'Հաշվարկի խառնուրդ՝ {blendRatio}% Ուղիղ / {inverseBlendRatio}% Մեթոդ',
-            method: 'Մեթոդ',
-            direct: 'Ուղիղ',
+            calculationBlend: 'Հաշվարկի խառնուրդ՝ {blendRatio}% Սովորել / {inverseBlendRatio}% Հաստատուն', // CHANGED
+            method: 'Հաստատուն', // CHANGED
+            direct: 'Սովորել', // CHANGED
             directCalculated: 'Ուղղակիորեն հաշվարկված՝ K={kValue}, Phi={phiValue}°'
         }
     },
@@ -568,7 +569,7 @@ const translations = {
             rotorIsBalanced: 'Rotor Seimbang!',
             vibrationBelowThreshold: 'Amplitud getaran ({amplitude} IPS) di bawah ambang 0.2 IPS.',
             calculationMethod: 'Kaedah Pengiraan',
-            lookupTable: 'Pokok Keputusan',
+            lookupTable: 'Pemalar 0 (K=20, Φ=280)', // CHANGED
             constant1: 'Pemalar 1 (K=15, Φ=298)',
             constant2: 'Pemalar 2 (K=22, Φ=270)',
             vibrationMeasurement: 'Pengukuran Getaran',
@@ -590,9 +591,9 @@ const translations = {
             generateReport: 'Jana Laporan PDF',
             interpolatedValues: 'K={kValue}, Phi={phiValue}°',
             plotTitle: 'Plot Pengimbangan',
-            calculationBlend: 'Campuran Pengiraan: {blendRatio}% Terus / {inverseBlendRatio}% Kaedah',
-            method: 'Kaedah',
-            direct: 'Terus',
+            calculationBlend: 'Campuran Pengiraan: {blendRatio}% Belajar / {inverseBlendRatio}% Pemalar', // CHANGED
+            method: 'Pemalar', // CHANGED
+            direct: 'Belajar', // CHANGED
             directCalculated: 'Dikira Terus: K={kValue}, Phi={phiValue}°'
         },
         tailRotor: {
@@ -602,7 +603,7 @@ const translations = {
             rotorIsBalanced: 'Rotor Seimbang!',
             vibrationBelowThreshold: 'Amplitud getaran ({amplitude} IPS) di bawah ambang 0.2 IPS.',
             calculationMethod: 'Kaedah Pengiraan',
-            lookupTable: 'Pokok Keputusan',
+            lookupTable: 'Pemalar 0 (K=2.2, Φ=305)', // CHANGED
             constant1: 'Pemalar 1 (K=2, Φ=310)',
             constant2: 'Pemalar 2 (K=2.8, Φ=302)',
             vibrationMeasurement: 'Pengukuran Getaran',
@@ -623,9 +624,9 @@ const translations = {
             generateReport: 'Jana Laporan PDF',
             interpolatedValues: 'K={kValue}, Phi={phiValue}°',
             plotTitle: 'Plot Pengimbangan',
-            calculationBlend: 'Campuran Pengiraan: {blendRatio}% Terus / {inverseBlendRatio}% Kaedah',
-            method: 'Kaedah',
-            direct: 'Terus',
+            calculationBlend: 'Campuran Pengiraan: {blendRatio}% Belajar / {inverseBlendRatio}% Pemalar', // CHANGED
+            method: 'Pemalar', // CHANGED
+            direct: 'Belajar', // CHANGED
             directCalculated: 'Dikira Terus: K={kValue}, Phi={phiValue}°'
         }
     },
@@ -644,7 +645,7 @@ const translations = {
             rotorIsBalanced: 'Wirnik jest wyważony!',
             vibrationBelowThreshold: 'Amplituda wibracji ({amplitude} IPS) jest poniżej progu 0.2 IPS.',
             calculationMethod: 'Metoda obliczeniowa',
-            lookupTable: 'Drzewa decyzyjne',
+            lookupTable: 'Stała 0 (K=20, Φ=280)', // CHANGED
             constant1: 'Stała 1 (K=15, Φ=298)',
             constant2: 'Stała 2 (K=22, Φ=270)',
             vibrationMeasurement: 'Pomiar wibracji',
@@ -666,9 +667,9 @@ const translations = {
             generateReport: 'Generuj raport PDF',
             interpolatedValues: 'K={kValue}, Phi={phiValue}°',
             plotTitle: 'Wykres wyważania',
-            calculationBlend: 'Mieszanka obliczeniowa: {blendRatio}% Bezpośrednia / {inverseBlendRatio}% Metoda',
-            method: 'Metoda',
-            direct: 'Bezpośrednia',
+            calculationBlend: 'Mieszanka obliczeniowa: {blendRatio}% Uczenie się / {inverseBlendRatio}% Stała', // CHANGED
+            method: 'Stała', // CHANGED
+            direct: 'Uczenie się', // CHANGED
             directCalculated: 'Obliczone bezpośrednio: K={kValue}, Phi={phiValue}°'
         },
         tailRotor: {
@@ -678,7 +679,7 @@ const translations = {
             rotorIsBalanced: 'Wirnik jest wyważony!',
             vibrationBelowThreshold: 'Amplituda wibracji ({amplitude} IPS) jest poniżej progu 0.2 IPS.',
             calculationMethod: 'Metoda obliczeniowa',
-            lookupTable: 'Drzewa decyzyjne',
+            lookupTable: 'Stała 0 (K=2.2, Φ=305)', // CHANGED
             constant1: 'Stała 1 (K=2, Φ=310)',
             constant2: 'Stała 2 (K=2.8, Φ=302)',
             vibrationMeasurement: 'Pomiar wibracji',
@@ -699,9 +700,9 @@ const translations = {
             generateReport: 'Generuj raport PDF',
             interpolatedValues: 'K={kValue}, Phi={phiValue}°',
             plotTitle: 'Wykres wyważania',
-            calculationBlend: 'Mieszanka obliczeniowa: {blendRatio}% Bezpośrednia / {inverseBlendRatio}% Metoda',
-            method: 'Metoda',
-            direct: 'Bezpośrednia',
+            calculationBlend: 'Mieszanka obliczeniowa: {blendRatio}% Uczenie się / {inverseBlendRatio}% Stała', // CHANGED
+            method: 'Stała', // CHANGED
+            direct: 'Uczenie się', // CHANGED
             directCalculated: 'Obliczone bezpośrednio: K={kValue}, Phi={phiValue}°'
         }
     },
@@ -720,7 +721,7 @@ const translations = {
             rotorIsBalanced: 'Rotor je vyvážený!',
             vibrationBelowThreshold: 'Amplituda vibrací ({amplitude} IPS) je pod prahem 0.2 IPS.',
             calculationMethod: 'Metoda výpočtu',
-            lookupTable: 'Rozhodovací stromy',
+            lookupTable: 'Konstanta 0 (K=20, Φ=280)', // CHANGED
             constant1: 'Konstanta 1 (K=15, Φ=298)',
             constant2: 'Konstanta 2 (K=22, Φ=270)',
             vibrationMeasurement: 'Měření vibrací',
@@ -742,9 +743,9 @@ const translations = {
             generateReport: 'Vytvořit PDF zprávu',
             interpolatedValues: 'K={kValue}, Phi={phiValue}°',
             plotTitle: 'Graf vyvažování',
-            calculationBlend: 'Směs výpočtu: {blendRatio}% Přímá / {inverseBlendRatio}% Metoda',
-            method: 'Metoda',
-            direct: 'Přímá',
+            calculationBlend: 'Směs výpočtu: {blendRatio}% Učení / {inverseBlendRatio}% Konstanta', // CHANGED
+            method: 'Konstanta', // CHANGED
+            direct: 'Učení', // CHANGED
             directCalculated: 'Přímo vypočteno: K={kValue}, Phi={phiValue}°'
         },
         tailRotor: {
@@ -754,7 +755,7 @@ const translations = {
             rotorIsBalanced: 'Rotor je vyvážený!',
             vibrationBelowThreshold: 'Amplituda vibrací ({amplitude} IPS) je pod prahem 0.2 IPS.',
             calculationMethod: 'Metoda výpočtu',
-            lookupTable: 'Rozhodovací stromy',
+            lookupTable: 'Konstanta 0 (K=2.2, Φ=305)', // CHANGED
             constant1: 'Konstanta 1 (K=2, Φ=310)',
             constant2: 'Konstanta 2 (K=2.8, Φ=302)',
             vibrationMeasurement: 'Měření vibrací',
@@ -775,9 +776,9 @@ const translations = {
             generateReport: 'Vytvořit PDF zprávu',
             interpolatedValues: 'K={kValue}, Phi={phiValue}°',
             plotTitle: 'Graf vyvažování',
-            calculationBlend: 'Směs výpočtu: {blendRatio}% Přímá / {inverseBlendRatio}% Metoda',
-            method: 'Metoda',
-            direct: 'Přímá',
+            calculationBlend: 'Směs výpočtu: {blendRatio}% Učení / {inverseBlendRatio}% Konstanta', // CHANGED
+            method: 'Konstanta', // CHANGED
+            direct: 'Učení', // CHANGED
             directCalculated: 'Přímo vypočteno: K={kValue}, Phi={phiValue}°'
         }
     },
@@ -796,7 +797,7 @@ const translations = {
             rotorIsBalanced: 'Rotorul este echilibrat!',
             vibrationBelowThreshold: 'Amplitudinea vibrațiilor ({amplitude} IPS) este sub pragul de 0.2 IPS.',
             calculationMethod: 'Metoda de calcul',
-            lookupTable: 'Arbori de decizie',
+            lookupTable: 'Constanta 0 (K=20, Φ=280)', // CHANGED
             constant1: 'Constanta 1 (K=15, Φ=298)',
             constant2: 'Constanta 2 (K=22, Φ=270)',
             vibrationMeasurement: 'Măsurarea vibrațiilor',
@@ -818,9 +819,9 @@ const translations = {
             generateReport: 'Generați raport PDF',
             interpolatedValues: 'K={kValue}, Phi={phiValue}°',
             plotTitle: 'Grafic de echilibrare',
-            calculationBlend: 'Amestec de calcul: {blendRatio}% Direct / {inverseBlendRatio}% Metodă',
-            method: 'Metodă',
-            direct: 'Direct',
+            calculationBlend: 'Amestec de calcul: {blendRatio}% Învățare / {inverseBlendRatio}% Constantă', // CHANGED
+            method: 'Constantă', // CHANGED
+            direct: 'Învățare', // CHANGED
             directCalculated: 'Calculat direct: K={kValue}, Phi={phiValue}°'
         },
         tailRotor: {
@@ -830,7 +831,7 @@ const translations = {
             rotorIsBalanced: 'Rotorul este echilibrat!',
             vibrationBelowThreshold: 'Amplitudinea vibrațiilor ({amplitude} IPS) este sub pragul de 0.2 IPS.',
             calculationMethod: 'Metoda de calcul',
-            lookupTable: 'Arbori de decizie',
+            lookupTable: 'Constanta 0 (K=2.2, Φ=305)', // CHANGED
             constant1: 'Constanta 1 (K=2, Φ=310)',
             constant2: 'Constanta 2 (K=2.8, Φ=302)',
             vibrationMeasurement: 'Măsurarea vibrațiilor',
@@ -851,13 +852,14 @@ const translations = {
             generateReport: 'Generați raport PDF',
             interpolatedValues: 'K={kValue}, Phi={phiValue}°',
             plotTitle: 'Grafic de echilibrare',
-            calculationBlend: 'Amestec de calcul: {blendRatio}% Direct / {inverseBlendRatio}% Metodă',
-            method: 'Metodă',
-            direct: 'Direct',
+            calculationBlend: 'Amestec de calcul: {blendRatio}% Învățare / {inverseBlendRatio}% Constantă', // CHANGED
+            method: 'Constantă', // CHANGED
+            direct: 'Învățare', // CHANGED
             directCalculated: 'Calculat direct: K={kValue}, Phi={phiValue}°'
         }
     }
 };
+// ... (rest of translations) ...
 
 const langNames = {
     en: 'English',
@@ -1467,7 +1469,9 @@ const HomePage = ({ setPage, lang, setLang, t }) => {
 };
 
 const bladeConfig = { Yellow: 0, Green: 240, Red: 120};
+// ADDED constant0
 const mainRotorConstants = {
+    constant0: { K: 20, Phi: 280 },
     constant1: { K: 15, Phi: 298 },
     constant2: { K: 22, Phi: 270 },
 };
@@ -1476,6 +1480,7 @@ const MainRotorPage = ({ setPage, t }) => {
     const topRef = useRef(null);
     const bladeTextColors = { Yellow: 'text-yellow-400', Red: 'text-red-500', Green: 'text-green-500' };
     
+    // CHANGED DEFAULT to 'lookup' (which is now Constant 0)
     const [calculationMode, setCalculationMode] = useState('lookup'); 
     
     const [blendRatio, setBlendRatio] = useState(100);
@@ -1517,13 +1522,15 @@ const MainRotorPage = ({ setPage, t }) => {
         return calculateDirectCoefficients(history, 'main');
     }, [history]);
 
+    // UPDATED useMemo to use constant0 for 'lookup'
     const methodCoeffs = useMemo(() => {
         if (calculationMode === 'lookup') {
-            return getCoefficientsFromLookup('main', amplitude, phaseDeg);
+            // 'lookup' mode is now our 'constant0'
+            return mainRotorConstants.constant0;
         } else {
             return mainRotorConstants[calculationMode];
         }
-    }, [calculationMode, amplitude, phaseDeg]);
+    }, [calculationMode]);
 
     const finalCoeffs = useMemo(() => {
         const ratio = blendRatio / 100;
@@ -1532,7 +1539,7 @@ const MainRotorPage = ({ setPage, t }) => {
         if (!directCoeffs.isCalculable || ratio === 0) {
             return methodCoeffs;
         }
-        if (ratio === 100) { // CORRECTION: Was ratio === 1, but blendRatio is 0-100
+        if (ratio === 100) { 
             return { K: directCoeffs.K, Phi: directCoeffs.Phi };
         }
 
@@ -1556,7 +1563,7 @@ const MainRotorPage = ({ setPage, t }) => {
     }, [blendRatio, directCoeffs, methodCoeffs, userInput]);
 
 
-    // *** NEW HELPER FUNCTIONS FOR CONSTRAINED SOLVER ***
+    // *** HELPER FUNCTIONS FOR CONSTRAINED SOLVER ***
 
     // General 2-blade solver: Solves w1*V1 + w2*V2 = V_target
     // V_target_cart is {x, y}, angles are in degrees. Returns { w1, w2 }
@@ -1595,7 +1602,7 @@ const MainRotorPage = ({ setPage, t }) => {
     };
 
 
-    // *** NEW CONSTRAINED SOLVER LOGIC ***
+    // *** CONSTRAINED SOLVER LOGIC ***
     const calculateRecommendation = useCallback((K, Phi) => {
         if (K === null || K <= 0 || !userInput) {
             updateCurrentStep({
@@ -1623,12 +1630,12 @@ const MainRotorPage = ({ setPage, t }) => {
             };
         });
 
-        // 3. Calculate initial ideal components using (2/3) projection
+        // 3. Calculate initial ideal components (REMOVED 2/3 factor)
         // This is our "best guess" that distributes the load
         const idealChanges = {};
         Object.keys(bladeConfig).forEach(color => {
             const angleDiffRad = (correctionAngle - constraints[color].angle) * Math.PI / 180;
-            const weightComponent = correctionMagnitude * Math.cos(angleDiffRad) * (2 / 3);
+            const weightComponent = correctionMagnitude * Math.cos(angleDiffRad); // REMOVED * (2 / 3)
             idealChanges[color] = weightComponent;
         });
 
@@ -1886,7 +1893,8 @@ const MainRotorPage = ({ setPage, t }) => {
                 {userInput && calculatedCoeffs.K && (
                     <div className="p-4 mb-6 bg-gray-800 rounded-lg">
                         <h2 className="mb-3 text-xl font-semibold text-cyan-400">{t.mainRotor.plotTitle}</h2>
-                        <MainRotorPlot plotAmplitude={amplitude * (2/3)} phaseDeg={phaseDeg} K={calculatedCoeffs.K} Phi={calculatedCoeffs.Phi}/>
+                        {/* REMOVED 2/3 factor from plotAmplitude */}
+                        <MainRotorPlot plotAmplitude={amplitude} phaseDeg={phaseDeg} K={calculatedCoeffs.K} Phi={calculatedCoeffs.Phi}/>
                     </div>
                 )}
                 
@@ -1904,7 +1912,9 @@ const MainRotorPage = ({ setPage, t }) => {
     );
 };
 
+// ADDED constant0
 const tailRotorConstants = {
+    constant0: { K: 2.2, Phi: 305 },
     constant1: { K: 2, Phi: 310 },
     constant2: { K: 2.8, Phi: 302 },
 };
@@ -1915,6 +1925,7 @@ const TailRotorPage = ({ setPage, t }) => {
     const smallWasherWeight = 0.7;
     const largeWasherWeight = 2.0;
 
+    // CHANGED DEFAULT to 'lookup' (which is now Constant 0)
     const [calculationMode, setCalculationMode] = useState('lookup'); 
     
     const [blendRatio, setBlendRatio] = useState(100);
@@ -1955,13 +1966,15 @@ const TailRotorPage = ({ setPage, t }) => {
         return calculateDirectCoefficients(history, 'tail');
     }, [history]);
 
+    // UPDATED useMemo to use constant0 for 'lookup'
     const methodCoeffs = useMemo(() => {
         if (calculationMode === 'lookup') {
-            return getCoefficientsFromLookup('tail', amplitude, phaseDeg);
+            // 'lookup' mode is now our 'constant0'
+            return tailRotorConstants.constant0;
         } else {
             return tailRotorConstants[calculationMode];
         }
-    }, [calculationMode, amplitude, phaseDeg]);
+    }, [calculationMode]);
 
     const finalCoeffs = useMemo(() => {
         const ratio = blendRatio / 100;
