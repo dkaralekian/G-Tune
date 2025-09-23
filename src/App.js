@@ -5,21 +5,6 @@ import logo from './assets/logo.png';
 import html2pdf from 'html2pdf.js/dist/html2pdf.min.js';
 import Report from './Report.js';
 
-
-// --- IMPORTATION DES DONNÉES ---
-import {
-    main_rotor_K_lookup,
-    main_rotor_Phi_lookup,
-    tail_rotor_K_lookup,
-    tail_rotor_Phi_lookup
-} from './data/lookupTables.js';
-
-// This is no longer used by default, but kept in case 'lookup' mode is ever restored
-const lookupTables = {
-    main: { K: main_rotor_K_lookup, Phi: main_rotor_Phi_lookup },
-    tail: { K: tail_rotor_K_lookup, Phi: tail_rotor_Phi_lookup },
-};
-
 // --- INTERNATIONALIZATION (i18n) ---
 const translations = {
     en: {
@@ -236,7 +221,7 @@ const translations = {
             small: 'Pequeña',
             large: 'Grande',
             recommendation: 'Recomendación',
-            recommendationFinalSetup: 'Recomendación y Configuración Final',
+            recommendationFinalSetup: 'Recomendación y Configuración Finale',
             recommendedFinalWashers: 'Arandelas Finales Recomendadas',
             yourFinalWasherSetup: 'Tu Configuración Final de Arandelas',
             goToNextStep: 'Siguiente Paso',
@@ -859,7 +844,6 @@ const translations = {
         }
     }
 };
-// ... (rest of translations) ...
 
 const langNames = {
     en: 'English',
@@ -973,53 +957,9 @@ const calculateDirectCoefficients = (history, rotorType) => {
 // New rounding function for main rotor weights
 const roundToHalf = (num) => Math.round(num * 2) / 2;
 
-function bilinearInterpolate(table, x, y) {
-    const X_STEP = 0.2;
-    const Y_STEP = 5.0;
-    const X_MIN = 0.2;
-    const x_table_size = table[0].length;
-    const y_table_size = table.length;
-    const X_MAX = X_MIN + (x_table_size - 1) * X_STEP;
-    x = Math.max(X_MIN, Math.min(x, X_MAX));
-    y = ((y % 360) + 360) % 360;
-    const x1_idx = Math.floor((x - X_MIN) / X_STEP);
-    const x2_idx = Math.min(x1_idx + 1, x_table_size - 1);
-    const y1_idx = Math.floor(y / Y_STEP);
-    const y2_idx = (y1_idx + 1) % y_table_size;
-    const row1 = table[y1_idx];
-    const row2 = table[y2_idx];
-    if (!row1 || !row2) return 0;
-    const q11 = row1[x1_idx];
-    const q12 = row2[x1_idx];
-    const q21 = row1[x2_idx];
-    const q22 = row2[x2_idx];
-    const x1 = x1_idx * X_STEP + X_MIN;
-    const x2 = x2_idx * X_STEP + X_MIN;
-    const y1 = y1_idx * Y_STEP;
-    const y2 = y1_idx * Y_STEP + Y_STEP;
-    if (x1 === x2) {
-        if (y1 === y2) return q11;
-        const t = (y - y1) / (y2 - y1);
-        if (isNaN(t)) return q11;
-        return q11 * (1 - t) + q12 * t;
-    }
-    const r1 = ((x2 - x) / (x2 - x1)) * q11 + ((x - x1) / (x2 - x1)) * q21;
-    const r2 = ((x2 - x) / (x2 - x1)) * q12 + ((x - x1) / (x2 - x1)) * q22;
-    if (y1 === y2) return r1;
-    const t = (y - y1) / (y2 - y1);
-    if (isNaN(t)) return r1;
-    return r1 * (1 - t) + r2 * t;
-}
+// REMOVED bilinearInterpolate function
 
-const getCoefficientsFromLookup = (rotorType, amplitude, phase) => {
-    const tables = lookupTables[rotorType];
-    if (!tables || !tables.K || !tables.Phi || !tables.K.length || !tables.K[0].length) {
-        return { K: 0, Phi: 0 };
-    }
-    const K = bilinearInterpolate(tables.K, amplitude, phase);
-    const Phi = bilinearInterpolate(tables.Phi, amplitude, phase);
-    return { K, Phi };
-};
+// REMOVED getCoefficientsFromLookup function
 
 const parseNumber = (str) => {
     if (typeof str === 'number') return str;
