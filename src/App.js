@@ -945,10 +945,12 @@ const calculateDirectCoefficients = (history, rotorType) => {
     // So, DeltaV = Effect(DeltaW), which means:
     // Mag(DeltaV) = Mag(DeltaW) / K  => K = Mag(DeltaW) / Mag(DeltaV)
     // Angle(DeltaV) = Angle(DeltaW) + Phi => Phi = Angle(DeltaV) - Angle(DeltaW)
+    
     const K = deltaW.mag / deltaV.mag;
-    // CORRECTION: The formula for Phi was inverted. It should be the angle of the
-    // resulting vibration vector minus the angle of the weight vector that caused it.
-    const Phi = (deltaW.deg - deltaV.deg) % 360;
+
+    // *** THIS IS THE CORRECTED LINE ***
+    // We add 360 to ensure the modulo result is always positive (0-360)
+    const Phi = (deltaV.deg - deltaW.deg + 360) % 360;
 
     return { K, Phi, isCalculable: true };
 };
