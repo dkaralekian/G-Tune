@@ -1210,6 +1210,7 @@ const TailRotorPage = ({ setPage, t }) => {
     }, [directCoeffs, userInput]);
 
 
+    const currentWashersDep = JSON.stringify(currentWashers);
     useEffect(() => {
         const calculateMultiScrewRecommendation = () => {
             if (!userInput || !finalCoeffs.K || finalCoeffs.K <= 0) {
@@ -1288,7 +1289,7 @@ const TailRotorPage = ({ setPage, t }) => {
                         screwIndexCombos.push([...currentCombo]);
                         return;
                     }
-                    for (let i = start; i < screwCount; i++) {
+                    for (let i = 0; i < screwCount; i++) {
                         currentCombo.push(i);
                         getCombos(i + 1, currentCombo);
                         currentCombo.pop();
@@ -1309,7 +1310,7 @@ const TailRotorPage = ({ setPage, t }) => {
 
         calculateMultiScrewRecommendation();
 
-    }, [userInput, finalCoeffs, JSON.stringify(currentWashers), amplitude, phaseDeg, screwAngles, updateCurrentStep, screwCount]);
+    }, [userInput, finalCoeffs, currentWashersDep, amplitude, phaseDeg, screwAngles, updateCurrentStep, currentWashers, screwCount]);
     
     const totalWasherWeights = useMemo(() => {
         return actualWashers.map(washers =>
