@@ -1174,6 +1174,10 @@ const TailRotorPage = ({ setPage, t }) => {
     const [isHelpPopupOpen, setIsHelpPopupOpen] = useState(false);
     const [isInstalledWeightsOpen, setIsInstalledWeightsOpen] = useState(currentStepIndex === 0);
 
+    useEffect(() => {
+        setIsInstalledWeightsOpen(currentStepIndex === 0);
+    }, [currentStepIndex]);
+
 
     const currentStepData = history[currentStepIndex];
     const { amplitude, phaseDeg, userInput, currentWashers, recommendedWashers, actualWashers, calculatedCoeffs } = currentStepData;
@@ -1189,13 +1193,6 @@ const TailRotorPage = ({ setPage, t }) => {
     const screwAngles = useMemo(() => Array.from({length: screwCount}, (_, i) => (360 / screwCount) * i + (360 / (2 * screwCount))), [screwCount]);
     
     const isBalanced = amplitude < 0.2 && userInput;
-
-    const historyDep = JSON.stringify(history.map(step => ({
-        userInput: step.userInput,
-        amplitude: step.amplitude,
-        phaseDeg: step.phaseDeg,
-        currentWashers: step.currentWashers,
-    })));
 
     const directCoeffs = useMemo(() => {
         return calculateDirectCoefficients(history, 'tail');
