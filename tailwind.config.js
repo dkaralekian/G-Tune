@@ -5,11 +5,7 @@ module.exports = {
   ],
   darkMode: 'class',
   theme: {
-    extend: {
-      fontFamily: {
-        'ropasans': ['"Ropa Sans"', 'sans-serif'],
-      },
-    },
+    extend: {},
   },
   plugins: [],
 }
