@@ -714,12 +714,7 @@ const MainRotorPage = ({ setPage, t }) => {
 
     const directCoeffs = useMemo(() => {
         return calculateDirectCoefficients(history, 'main');
-    }, [JSON.stringify(history.map(step => ({
-        userInput: step.userInput,
-        amplitude: step.amplitude,
-        phaseDeg: step.phaseDeg,
-        currentWeights: step.currentWeights,
-    })))]);
+    }, [history]);
 
     const finalCoeffs = useMemo(() => {
         const constantCoeffs = { K: 22, Phi: 260 };
@@ -979,7 +974,7 @@ const MainRotorPage = ({ setPage, t }) => {
                            <li><strong>Before you start:</strong> Enter all weights currently on the rotor in the "Currently Installed" fields.</li>
                            <li><strong>First Run is for Calibration:</strong> The first measurement helps the app learn your rotor. Vibration may not decrease and might even increase—this is normal. A significant improvement is expected on the <em>second</em> step.</li>
                            <li><strong>After Blade Track Adjustments:</strong> Any change to pitch links or trim tabs resets the learning process. The next run will again serve as a calibration step.</li>
-                           <li><strong>Deviating from the Recommendation:</strong> If you install different weights than recommended, you <strong>must update the values</strong> in the "Detailed Weight Distribution" section. This is critical for the algorithm's accuracy.</li>
+                           <li><strong>Deviating from the Recommendation:</strong> If you install different weights than recommended, you <strong>must update the values</strong> in the "Detailed Setup" section. This is critical for the algorithm's accuracy.</li>
                            <li><strong>Need Assistance?</strong> If you're still having issues after a few steps, please contact <a href="mailto:support@guimbal.com" className="text-sky-500 hover:underline"><strong>support@guimbal.com</strong></a>.</li>
                         </ul>
                         <div className="mt-6 text-right">
@@ -1152,7 +1147,6 @@ const MainRotorPage = ({ setPage, t }) => {
         </div>
     );
 };
-// ... (The rest of the file, including TailRotorPage and App component, remains unchanged)
 
 const TailRotorPage = ({ setPage, t }) => {
     const topRef = useRef(null);
@@ -1178,7 +1172,8 @@ const TailRotorPage = ({ setPage, t }) => {
 
     const [selectedScrew, setSelectedScrew] = useState(1);
     const [isHelpPopupOpen, setIsHelpPopupOpen] = useState(false);
-    const [isInstalledWeightsOpen, setIsInstalledWeightsOpen] = useState(false);
+    const [isInstalledWeightsOpen, setIsInstalledWeightsOpen] = useState(currentStepIndex === 0);
+
 
     const currentStepData = history[currentStepIndex];
     const { amplitude, phaseDeg, userInput, currentWashers, recommendedWashers, actualWashers, calculatedCoeffs } = currentStepData;
@@ -1195,16 +1190,16 @@ const TailRotorPage = ({ setPage, t }) => {
     
     const isBalanced = amplitude < 0.2 && userInput;
 
+    const historyDep = JSON.stringify(history.map(step => ({
+        userInput: step.userInput,
+        amplitude: step.amplitude,
+        phaseDeg: step.phaseDeg,
+        currentWashers: step.currentWashers,
+    })));
+
     const directCoeffs = useMemo(() => {
         return calculateDirectCoefficients(history, 'tail');
-    }, [
-        JSON.stringify(history.map(step => ({
-            userInput: step.userInput,
-            amplitude: step.amplitude,
-            phaseDeg: step.phaseDeg,
-            currentWashers: step.currentWashers,
-        })))
-    ]);
+    }, [history]);
 
     const finalCoeffs = useMemo(() => {
         const constantCoeffs = { K: 1.8, Phi: 300 };
@@ -1317,7 +1312,7 @@ const TailRotorPage = ({ setPage, t }) => {
 
         calculateMultiScrewRecommendation();
 
-    }, [userInput, finalCoeffs, currentWashers, amplitude, phaseDeg, screwAngles, updateCurrentStep]);
+    }, [userInput, finalCoeffs, JSON.stringify(currentWashers), amplitude, phaseDeg, screwAngles, updateCurrentStep, screwCount]);
     
     const totalWasherWeights = useMemo(() => {
         return actualWashers.map(washers =>
@@ -1364,7 +1359,7 @@ const TailRotorPage = ({ setPage, t }) => {
 
         const v_final_polar = toPolar(v_final_cart.x, v_final_cart.y);
         return { amplitude: v_final_polar.mag, phaseDeg: v_final_polar.deg };
-    }, [amplitude, phaseDeg, currentWashers, actualWashers, calculatedCoeffs, userInput, screwAngles]);
+    }, [amplitude, phaseDeg, currentWashers, actualWashers, calculatedCoeffs, userInput, screwAngles, screwCount]);
 
 
     const handleNextStep = () => {
@@ -1577,7 +1572,12 @@ const TailRotorPage = ({ setPage, t }) => {
 export default function App() {
     const [page, setPage] = useState('home');
     const [lang, setLang] = useState('en'); 
-    const [theme, setTheme] = useState('light');
+    const [theme, setTheme] = useState(() => {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            return 'dark';
+        }
+        return 'light';
+    });
 
     const toggleTheme = () => {
         setTheme(prevTheme => (prevTheme === 'dark' ? 'light' : 'dark'));
