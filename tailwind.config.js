@@ -3,11 +3,11 @@ module.exports = {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
-  darkMode: 'class', // This is the crucial line that enables class-based dark mode
+  darkMode: 'class',
   theme: {
     extend: {
       fontFamily: {
-        'rosa-sans': ['Rosa Sans', ...defaultTheme.fontFamily.sans],
+        'ropasans': ['"Ropa Sans"', 'sans-serif'],
       },
     },
   },
