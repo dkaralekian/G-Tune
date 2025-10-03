@@ -7,7 +7,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        'eurostile': ['Eurostile', 'sans-serif'],
+        'rosa-sans': ['Rosa Sans', ...defaultTheme.fontFamily.sans],
       },
     },
   },
