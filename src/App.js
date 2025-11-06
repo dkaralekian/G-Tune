@@ -1289,7 +1289,8 @@ const TailRotorPage = ({ setPage, t }) => {
                         screwIndexCombos.push([...currentCombo]);
                         return;
                     }
-                    for (let i = 0; i < screwCount; i++) {
+                    // FIX: Start the loop from the 'start' parameter
+                    for (let i = start; i < screwCount; i++) { 
                         currentCombo.push(i);
                         getCombos(i + 1, currentCombo);
                         currentCombo.pop();
