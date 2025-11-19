@@ -603,7 +603,7 @@ const HomePage = ({ setPage, lang, setLang, t, theme, toggleTheme }) => {
     return (
         <div className="relative flex flex-col items-center justify-center min-h-screen p-4 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white">
             <img src={theme === 'light' ? logoBlue : logo} alt="Guimbal" className="w-40 mb-12" />
-            <h1 className="text-4xl font-bold text-gray-50 dark:text-[#B4DDF8] [text-shadow:0_0_7px_#1079BD] dark:[text-shadow:0_0_4px_#4EC5F9] mb-2 font-sans">{t.home.title}</h1>
+            <h1 className="text-4xl font-bold text-gray-400 dark:text-[#B4DDF8] dark:[text-shadow:0_0_4px_#4EC5F9] mb-2 font-sans">{t.home.title}</h1>
             <p className="mb-8 text-gray-400 dark:text-gray-500">{t.home.subtitle}</p>
             <div className="w-4/5 max-w-xs space-y-4">
                 <button onClick={() => setPage('main')} className="w-full p-4 font-bold font-sans text-gray-900 dark:text-white transition bg-white dark:bg-gray-800 rounded-lg shadow-lg hover:bg-sky-100 dark:hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-opacity-50">{t.home.mainRotor}</button>
