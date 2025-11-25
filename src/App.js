@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import logo from './assets/logo.png';
-import logoBlue from './assets/logo_blue.png'; // Import the new logo for light mode
+import logoBlue from './assets/logo_blue.png'; 
 
-// Import html2pdf.js and the new Report component
+// Import html2pdf.js and the Report component
 import html2pdf from 'html2pdf.js/dist/html2pdf.min.js';
 import Report from './Report.js';
 
-// Import translations from the new dedicated file
+// Import translations
 import { translations, langNames } from './translations.js';
 
 
@@ -27,66 +27,83 @@ const toPolar = (x, y) => {
     };
 };
 
-
+// Least Squares Regression Algorithm
 const calculateDirectCoefficients = (history, rotorType) => {
-    const currentStepIndex = history.length - 1;
-    if (currentStepIndex < 1) return { isCalculable: false };
+    if (history.length < 2) return { isCalculable: false };
 
-    const initialState = history[0];
-    const currentState = history[currentStepIndex];
+    let numeratorReal = 0;
+    let numeratorImag = 0;
+    let denominator = 0;
+    let validStepsCount = 0;
 
-    if (!currentState.userInput || !initialState.userInput) return { isCalculable: false };
+    for (let i = 1; i < history.length; i++) {
+        const prevState = history[i - 1];
+        const curState = history[i];
 
-    const v1 = toCartesian(initialState.amplitude, initialState.phaseDeg);
-    const v2 = toCartesian(currentState.amplitude, currentState.phaseDeg);
-    const deltaV = toPolar(v2.x - v1.x, v2.y - v1.y);
+        if (!curState.userInput || !prevState.userInput) continue;
 
-    if (deltaV.mag < 0.01) return { isCalculable: false };
-
-    let totalDeltaWx = 0;
-    let totalDeltaWy = 0;
-
-    if (rotorType === 'main') {
-        const bladeConfig = { Yellow: 0, Green: 240, Red: 120 };
-        const initialWeights = initialState.currentWeights;
-        const currentWeights = currentState.currentWeights;
+        const v1 = toCartesian(prevState.amplitude, prevState.phaseDeg);
+        const v2 = toCartesian(curState.amplitude, curState.phaseDeg);
+        const dVx = v2.x - v1.x;
+        const dVy = v2.y - v1.y;
         
-        Object.keys(bladeConfig).forEach(color => {
-            const deltaWeight = currentWeights[color] - initialWeights[color];
-            if (deltaWeight !== 0) {
-                 const w_vec = toCartesian(deltaWeight, bladeConfig[color]);
-                 totalDeltaWx += w_vec.x;
-                 totalDeltaWy += w_vec.y;
-            }
-        });
+        let dWx = 0;
+        let dWy = 0;
 
-    } else { // rotorType === 'tail'
-        const screwCount = 7;
-        const screwAngles = Array.from({length: screwCount}, (_, i) => (360 / screwCount) * i + (360 / (2 * screwCount)));
-        const smallWasherWeight = 0.7;
-        const largeWasherWeight = 2.0;
-        const initialWashers = initialState.currentWashers;
-        const currentWashers = currentState.currentWashers;
-
-        for (let i = 0; i < screwCount; i++) {
-            const initialWeight = (initialWashers[i].small * smallWasherWeight) + (initialWashers[i].large * largeWasherWeight);
-            const currentWeight = (currentWashers[i].small * smallWasherWeight) + (currentWashers[i].large * largeWasherWeight);
-            const deltaWeight = currentWeight - initialWeight;
+        if (rotorType === 'main') {
+            const bladeConfig = { Yellow: 0, Green: 240, Red: 120 };
+            const prevWeights = prevState.currentWeights;
+            const curWeights = curState.currentWeights;
             
-            if (deltaWeight !== 0) {
-                const w_vec = toCartesian(deltaWeight, screwAngles[i]);
-                totalDeltaWx += w_vec.x;
-                totalDeltaWy += w_vec.y;
+            Object.keys(bladeConfig).forEach(color => {
+                const deltaWeight = curWeights[color] - prevWeights[color];
+                if (deltaWeight !== 0) {
+                     const w_vec = toCartesian(deltaWeight, bladeConfig[color]);
+                     dWx += w_vec.x;
+                     dWy += w_vec.y;
+                }
+            });
+
+        } else { // rotorType === 'tail'
+            const screwCount = 7;
+            const screwAngles = Array.from({length: screwCount}, (_, k) => (360 / screwCount) * k + (360 / (2 * screwCount)));
+            const smallWasherWeight = 0.7;
+            const largeWasherWeight = 2.0;
+            const prevWashers = prevState.currentWashers;
+            const curWashers = curState.currentWashers;
+
+            for (let k = 0; k < screwCount; k++) {
+                const prevW = (prevWashers[k].small * smallWasherWeight) + (prevWashers[k].large * largeWasherWeight);
+                const curW = (curWashers[k].small * smallWasherWeight) + (curWashers[k].large * largeWasherWeight);
+                const deltaWeight = curW - prevW;
+                
+                if (deltaWeight !== 0) {
+                    const w_vec = toCartesian(deltaWeight, screwAngles[k]);
+                    dWx += w_vec.x;
+                    dWy += w_vec.y;
+                }
             }
         }
+
+        const magWSq = dWx * dWx + dWy * dWy;
+        if (magWSq < 0.05) continue; 
+
+        numeratorReal += (dVx * dWx + dVy * dWy);
+        numeratorImag += (dVy * dWx - dVx * dWy);
+        denominator += magWSq;
+        validStepsCount++;
     }
     
-    const deltaW = toPolar(totalDeltaWx, totalDeltaWy);
-    
-    if (deltaW.mag < 0.01) return { isCalculable: false };
+    if (validStepsCount === 0 || denominator === 0) return { isCalculable: false };
 
-    const K = deltaW.mag / deltaV.mag;
-    const Phi = (deltaV.deg - deltaW.deg + 360) % 360;
+    const Hx = numeratorReal / denominator;
+    const Hy = numeratorImag / denominator;
+    const H_polar = toPolar(Hx, Hy);
+    
+    if (H_polar.mag < 0.0001) return { isCalculable: false }; 
+    
+    const K = 1 / H_polar.mag;
+    const Phi = H_polar.deg;
 
     return { K, Phi, isCalculable: true };
 };
@@ -149,6 +166,28 @@ const ClearButton = ({ onClear, show }) => {
             <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 R-0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
             </svg>
+        </button>
+    );
+};
+
+// Reset History Button
+const ResetHistoryButton = ({ onReset, isVisible, t }) => {
+    if (!isVisible) return null;
+    
+    const handleClick = () => {
+        // Updated confirmation text to mention pitch links/trim tabs
+        const confirmText = t?.common?.resetConfirm || "Have you adjusted pitch links or trim tabs?\n\nThis will clear the history of previous steps so the algorithm can learn the new aerodynamic configuration.\n\nAre you sure?";
+        if (window.confirm(confirmText)) {
+            onReset();
+        }
+    };
+
+    return (
+        <button 
+            onClick={handleClick}
+            className="ml-4 text-xs font-bold text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 underline decoration-dotted transition-colors"
+        >
+            {t?.common?.resetLearning || "↺ Reset Learning"}
         </button>
     );
 };
@@ -225,13 +264,10 @@ const TailScrewWeightInput = ({ number, washers, onWasherChange, isEditable }) =
 };
 
 // --- PLOT COMPONENTS ---
-
+// (Keeping Plot Components condensed for brevity as they haven't changed)
 const polarToCartesianPlot = (centerX, centerY, radius, angleInDegrees) => {
     const angleInRadians = ((angleInDegrees - 90) * Math.PI) / 180.0;
-    return {
-        x: centerX + radius * Math.cos(angleInRadians),
-        y: centerY + radius * Math.sin(angleInRadians),
-    };
+    return { x: centerX + radius * Math.cos(angleInRadians), y: centerY + radius * Math.sin(angleInRadians) };
 };
 
 const MainRotorPlot = React.memo(({ t, plotAmplitude, phaseDeg, K, Phi, selectedBlade, totalFinalWeights, finalUnbalance, recommendedChange, actualChange }) => {
@@ -239,116 +275,61 @@ const MainRotorPlot = React.memo(({ t, plotAmplitude, phaseDeg, K, Phi, selected
     const center = size / 2;
     const maxIPS = Math.max(0.4, plotAmplitude * 1.5, finalUnbalance.amplitude * 1.5);
     const plotRadius = center - 50;
-    
     const ipsToPx = useCallback((ips) => (ips / maxIPS) * plotRadius, [maxIPS, plotRadius]);
-
-    const blades = useMemo(() => [
-        { name: 'Yellow', color: '#fedf00', origAngle: 0 },
-        { name: 'Red', color: '#EF3340', origAngle: 120 },
-        { name: 'Green', color: '#22c55e', origAngle: 240 },
-    ], []);
-    
+    const blades = useMemo(() => [{ name: 'Yellow', color: '#fedf00', origAngle: 0 }, { name: 'Red', color: '#EF3340', origAngle: 120 }, { name: 'Green', color: '#22c55e', origAngle: 240 }], []);
     const maxWeight = maxIPS * K;
     const weightGrads = calculateNiceSteps(maxWeight, 6);
-
-    const plotBlades = blades.map(b => ({
-        ...b,
-        plotAngle: (b.origAngle + Phi - 180 + 360) % 360,
-    }));
-
+    const plotBlades = blades.map(b => ({ ...b, plotAngle: (b.origAngle + Phi - 180 + 360) % 360 }));
     const gridRings = [0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0];
-    const grid = {
-        circles: gridRings.filter(r => r <= maxIPS),
-        lines: Array.from({ length: 12 }, (_, i) => i * 30),
-    };
-
+    const grid = { circles: gridRings.filter(r => r <= maxIPS), lines: Array.from({ length: 12 }, (_, i) => i * 30) };
     const unbalancePoint = polarToCartesianPlot(center, center, ipsToPx(plotAmplitude), phaseDeg);
     const finalUnbalancePoint = polarToCartesianPlot(center, center, ipsToPx(finalUnbalance.amplitude), finalUnbalance.phaseDeg);
-
     const getRayEndPoint = (startPoint, angle, length) => {
         const angleInRadians = ((angle - 90) * Math.PI) / 180.0;
-        return {
-            x: startPoint.x + length * Math.cos(angleInRadians),
-            y: startPoint.y + length * Math.sin(angleInRadians),
-        };
+        return { x: startPoint.x + length * Math.cos(angleInRadians), y: startPoint.y + length * Math.sin(angleInRadians) };
     };
-    
     const correctiveVectors = useMemo(() => {
         const vectors = [];
         if (K > 0) {
             blades.forEach(blade => {
                 const weight = totalFinalWeights[blade.name];
                 if (weight > 0) {
-                    const v_effect_polar = {
-                        mag: weight / K,
-                        deg: (blade.origAngle + Phi + 360) % 360
-                    };
+                    const v_effect_polar = { mag: weight / K, deg: (blade.origAngle + Phi + 360) % 360 };
                     const delta_point = polarToCartesianPlot(0, 0, ipsToPx(v_effect_polar.mag), v_effect_polar.deg);
-                    const endPoint = {
-                        x: unbalancePoint.x + delta_point.x,
-                        y: unbalancePoint.y + delta_point.y
-                    };
-                    vectors.push({
-                        start: unbalancePoint,
-                        end: endPoint,
-                        color: blade.color,
-                        name: blade.name,
-                        weight: weight
-                    });
+                    const endPoint = { x: unbalancePoint.x + delta_point.x, y: unbalancePoint.y + delta_point.y };
+                    vectors.push({ start: unbalancePoint, end: endPoint, color: blade.color, name: blade.name, weight: weight });
                 }
             });
         }
         return vectors;
     }, [unbalancePoint, K, Phi, totalFinalWeights, ipsToPx, blades]);
-
     const isFinalDifferent = Math.hypot(unbalancePoint.x - finalUnbalancePoint.x, unbalancePoint.y - finalUnbalancePoint.y) > 1;
     const showYourActionPoint = JSON.stringify(actualChange) !== JSON.stringify(recommendedChange) && isFinalDifferent;
-
 
     return (
         <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-auto bg-gray-100 dark:bg-gray-800 rounded-lg">
             <g id="grid" className="stroke-gray-400 dark:stroke-gray-600">
                 {grid.circles.map(r => <circle key={r} cx={center} cy={center} r={ipsToPx(r)} fill="none" strokeWidth="1" />)}
-                {grid.lines.map(angle => {
-                    const { x, y } = polarToCartesianPlot(center, center, plotRadius, angle);
-                    return <line key={angle} x1={center} y1={center} x2={x} y2={y} strokeWidth="1" />;
-                })}
+                {grid.lines.map(angle => { const { x, y } = polarToCartesianPlot(center, center, plotRadius, angle); return <line key={angle} x1={center} y1={center} x2={x} y2={y} strokeWidth="1" />; })}
             </g>
             <g id="grid-labels" className="fill-gray-600 dark:fill-gray-400" fontSize="12">
-                {grid.lines.map((angle, i) => {
-                    const { x, y } = polarToCartesianPlot(center, center, plotRadius + 15, angle);
-                    return <text key={i} x={x} y={y} textAnchor="middle" alignmentBaseline="middle">{i === 0 ? 12 : i}h</text>;
-                })}
-                 {grid.circles.slice(0, -1).map(r => {
-                    const { x, y } = polarToCartesianPlot(center, center, ipsToPx(r), 270);
-                    return <text key={r} x={x-5} y={y} textAnchor="end" alignmentBaseline="middle">{r.toFixed(1)}</text>;
-                })}
+                {grid.lines.map((angle, i) => { const { x, y } = polarToCartesianPlot(center, center, plotRadius + 15, angle); return <text key={i} x={x} y={y} textAnchor="middle" alignmentBaseline="middle">{i === 0 ? 12 : i}h</text>; })}
+                 {grid.circles.slice(0, -1).map(r => { const { x, y } = polarToCartesianPlot(center, center, ipsToPx(r), 270); return <text key={r} x={x-5} y={y} textAnchor="end" alignmentBaseline="middle">{r.toFixed(1)}</text>; })}
             </g>
-
             <g id="projection-lines">
                 {plotBlades.map((blade, bladeIdx) => {
                     const neighbor1 = plotBlades[(bladeIdx + 1) % 3];
                     const neighbor2 = plotBlades[(bladeIdx + 2) % 3];
-                    
                     return weightGrads.map(weight => {
-                        const ips = weight / K;
-                        if (ips > maxIPS) return null;
+                        const ips = weight / K; if (ips > maxIPS) return null;
                         const gradPoint = polarToCartesianPlot(center, center, ipsToPx(ips), blade.plotAngle);
-
                         const rayLength = plotRadius * 2;
                         const ray1End = getRayEndPoint(gradPoint, neighbor1.plotAngle, rayLength);
                         const ray2End = getRayEndPoint(gradPoint, neighbor2.plotAngle, rayLength);
-                        
-                        return (
-                            <g key={`${blade.name}-${weight}`}>
-                                <line x1={gradPoint.x} y1={gradPoint.y} x2={ray1End.x} y2={ray1End.y} stroke={blade.color} strokeOpacity="0.5" strokeWidth="1.5"/>
-                                <line x1={gradPoint.x} y1={gradPoint.y} x2={ray2End.x} y2={ray2End.y} stroke={blade.color} strokeOpacity="0.5" strokeWidth="1.5"/>
-                            </g>
-                        );
+                        return ( <g key={`${blade.name}-${weight}`}><line x1={gradPoint.x} y1={gradPoint.y} x2={ray1End.x} y2={ray1End.y} stroke={blade.color} strokeOpacity="0.5" strokeWidth="1.5"/><line x1={gradPoint.x} y1={gradPoint.y} x2={ray2End.x} y2={ray2End.y} stroke={blade.color} strokeOpacity="0.5" strokeWidth="1.5"/></g>);
                     });
                 })}
             </g>
-            
             <g id="blades">
                 {plotBlades.map(blade => {
                     const isSelected = blade.name === selectedBlade;
@@ -359,69 +340,33 @@ const MainRotorPlot = React.memo(({ t, plotAmplitude, phaseDeg, K, Phi, selected
                             <line x1={center} y1={center} x2={endPoint.x} y2={endPoint.y} stroke={blade.color} strokeWidth={isSelected ? "8" : "4"} />
                             <text x={labelPoint.x} y={labelPoint.y} fill={blade.color} textAnchor="middle" alignmentBaseline="middle" fontWeight="bold" fontSize="16" style={{ opacity: isSelected ? 1 : 0.4, transition: 'opacity 0.3s' }}>{blade.name.charAt(0)}</text>
                             {weightGrads.map(weight => {
-                                const ips = weight / K;
-                                if (ips > maxIPS) return null;
+                                const ips = weight / K; if (ips > maxIPS) return null;
                                 const gradPoint = polarToCartesianPlot(center, center, ipsToPx(ips), blade.plotAngle);
                                 const textAngle = blade.plotAngle < 180 ? blade.plotAngle + 90 : blade.plotAngle - 90;
                                 const textPoint = polarToCartesianPlot(gradPoint.x, gradPoint.y, 10, textAngle);
-                                return (
-                                   <g key={`${blade.name}-grad-${weight}`}>
-                                        <circle cx={gradPoint.x} cy={gradPoint.y} r="2" fill={blade.color} />
-                                        <text x={textPoint.x} y={textPoint.y} fill={blade.color} fontSize="10" textAnchor="middle" alignmentBaseline="middle">{weight % 1 !== 0 ? weight.toFixed(1) : weight}g</text>
-                                   </g>
-                                )
+                                return ( <g key={`${blade.name}-grad-${weight}`}><circle cx={gradPoint.x} cy={gradPoint.y} r="2" fill={blade.color} /><text x={textPoint.x} y={textPoint.y} fill={blade.color} fontSize="10" textAnchor="middle" alignmentBaseline="middle">{weight % 1 !== 0 ? weight.toFixed(1) : weight}g</text></g>)
                             })}
                         </g>
                     );
                 })}
             </g>
-            
             <g id="corrective-vectors">
                 {correctiveVectors.map((vector, index) => {
                     const isSelected = vector.name === selectedBlade;
-
                     const midX = (vector.start.x + vector.end.x) / 2;
                     const midY = (vector.start.y + vector.end.y) / 2;
                     const dx = vector.end.x - vector.start.x;
                     const dy = vector.end.y - vector.start.y;
                     const len = Math.sqrt(dx * dx + dy * dy);
-
-                    let labelX = midX;
-                    let labelY = midY;
-
-                    if (len > 1e-6) {
-                        const normPerpDx = -dy / len;
-                        const normPerpDy = dx / len;
-                        const offset = 15;
-                        labelX = midX + normPerpDx * offset;
-                        labelY = midY + normPerpDy * offset;
-                    }
-                    
-                    return (
-                        <g key={`vector-${index}`}>
-                            <line 
-                                x1={vector.start.x} y1={vector.start.y} 
-                                x2={vector.end.x} y2={vector.end.y} 
-                                stroke={vector.color} 
-                                strokeWidth="3"
-                            />
-                            {isSelected && vector.weight > 0 && (
-                                <text x={labelX} y={labelY} fill={vector.color} textAnchor="middle" alignmentBaseline="middle" fontWeight="bold" fontSize="14">
-                                    {`${vector.weight.toFixed(1)}g`}
-                                </text>
-                            )}
-                        </g>
-                    );
+                    let labelX = midX; let labelY = midY;
+                    if (len > 1e-6) { const normPerpDx = -dy / len; const normPerpDy = dx / len; const offset = 15; labelX = midX + normPerpDx * offset; labelY = midY + normPerpDy * offset; }
+                    return ( <g key={`vector-${index}`}><line x1={vector.start.x} y1={vector.start.y} x2={vector.end.x} y2={vector.end.y} stroke={vector.color} strokeWidth="3"/>{isSelected && vector.weight > 0 && (<text x={labelX} y={labelY} fill={vector.color} textAnchor="middle" alignmentBaseline="middle" fontWeight="bold" fontSize="14">{`${vector.weight.toFixed(1)}g`}</text>)}</g>);
                 })}
             </g>
-
             <g id="unbalance-points">
                 <circle cx={unbalancePoint.x} cy={unbalancePoint.y} r="5" fill="none" stroke="#1079bd" strokeWidth="2" />
                 <circle cx={unbalancePoint.x} cy={unbalancePoint.y} r="2" fill="#1079bd" />
-                {showYourActionPoint && <>
-                    <circle cx={finalUnbalancePoint.x} cy={finalUnbalancePoint.y} r="5" fill="none" stroke="#0ff" strokeWidth="2" />
-                    <circle cx={finalUnbalancePoint.x} cy={finalUnbalancePoint.y} r="2" fill="#0ff" />
-                </>}
+                {showYourActionPoint && <><circle cx={finalUnbalancePoint.x} cy={finalUnbalancePoint.y} r="5" fill="none" stroke="#0ff" strokeWidth="2" /><circle cx={finalUnbalancePoint.x} cy={finalUnbalancePoint.y} r="2" fill="#0ff" /></>}
             </g>
         </svg>
     );
@@ -432,144 +377,71 @@ const TailRotorPlot = React.memo(({ t, amplitude, phaseDeg, K, Phi, selectedScre
     const center = size / 2;
     const maxIPS = Math.max(0.4, amplitude * 1.5, (finalUnbalance?.amplitude || 0) * 1.5);
     const plotRadius = center - 50;
-    
     const ipsToPx = useCallback((ips) => (ips / maxIPS) * plotRadius, [maxIPS, plotRadius]);
-
     const screwCount = 7;
-    const screws = useMemo(() => Array.from({length: screwCount}, (_, i) => ({
-        name: `${i + 1}`,
-        color: '#22d3ee',
-        origAngle: (360 / screwCount) * i + (360 / (2 * screwCount))
-    })), [screwCount]);
-    
+    const screws = useMemo(() => Array.from({length: screwCount}, (_, i) => ({ name: `${i + 1}`, color: '#22d3ee', origAngle: (360 / screwCount) * i + (360 / (2 * screwCount)) })), [screwCount]);
     const maxWeight = maxIPS * K;
     const weightGrads = calculateNiceSteps(maxWeight, 4);
-
-    const plotScrews = screws.map(s => ({
-        ...s,
-        plotAngle: (s.origAngle + Phi - 180 + 360) % 360,
-    }));
-
+    const plotScrews = screws.map(s => ({ ...s, plotAngle: (s.origAngle + Phi - 180 + 360) % 360 }));
     const gridRings = [0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0];
-    const grid = {
-        circles: gridRings.filter(r => r <= maxIPS),
-        lines: Array.from({ length: 12 }, (_, i) => i * 30),
-    };
-
+    const grid = { circles: gridRings.filter(r => r <= maxIPS), lines: Array.from({ length: 12 }, (_, i) => i * 30) };
     const unbalancePoint = polarToCartesianPlot(center, center, ipsToPx(amplitude), phaseDeg);
-
-    const getRayEndPoint = (startPoint, angle, length) => {
-        const angleInRadians = ((angle - 90) * Math.PI) / 180.0;
-        return {
-            x: startPoint.x + length * Math.cos(angleInRadians),
-            y: startPoint.y + length * Math.sin(angleInRadians),
-        };
-    };
-
+    const getRayEndPoint = (startPoint, angle, length) => { const angleInRadians = ((angle - 90) * Math.PI) / 180.0; return { x: startPoint.x + length * Math.cos(angleInRadians), y: startPoint.y + length * Math.sin(angleInRadians) }; };
     const vectorChain = useMemo(() => {
         const chain = [];
         let currentPoint = { ...unbalancePoint };
         const sortedScrews = [...screws].sort((a,b) => a.origAngle - b.origAngle);
-
         if (K > 0) {
             sortedScrews.forEach((screw) => {
                 const weight = totalWasherWeights[parseInt(screw.name) - 1];
                 if (weight > 0) {
-                    const v_effect_polar = {
-                        mag: weight / K,
-                        deg: (screw.origAngle + Phi + 360) % 360
-                    };
+                    const v_effect_polar = { mag: weight / K, deg: (screw.origAngle + Phi + 360) % 360 };
                     const delta_point = polarToCartesianPlot(0, 0, ipsToPx(v_effect_polar.mag), v_effect_polar.deg);
-                    const nextPoint = {
-                        x: currentPoint.x + delta_point.x,
-                        y: currentPoint.y + delta_point.y
-                    };
-                    chain.push({
-                        start: currentPoint,
-                        end: nextPoint,
-                        name: screw.name,
-                    });
+                    const nextPoint = { x: currentPoint.x + delta_point.x, y: currentPoint.y + delta_point.y };
+                    chain.push({ start: currentPoint, end: nextPoint, name: screw.name });
                     currentPoint = nextPoint;
                 }
             });
         }
         return chain;
     }, [unbalancePoint, K, Phi, totalWasherWeights, ipsToPx, screws]);
-    
     return (
         <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-auto bg-gray-100 dark:bg-gray-800 rounded-lg">
             <g id="grid" className="stroke-gray-400 dark:stroke-gray-600">
                 {grid.circles.map(r => <circle key={r} cx={center} cy={center} r={ipsToPx(r)} fill="none" strokeWidth="1" />)}
-                {grid.lines.map(angle => {
-                    const { x, y } = polarToCartesianPlot(center, center, plotRadius, angle);
-                    return <line key={angle} x1={center} y1={center} x2={x} y2={y} strokeWidth="1" />;
-                })}
+                {grid.lines.map(angle => { const { x, y } = polarToCartesianPlot(center, center, plotRadius, angle); return <line key={angle} x1={center} y1={center} x2={x} y2={y} strokeWidth="1" />; })}
             </g>
              <g id="grid-labels" className="fill-gray-600 dark:fill-gray-400" fontSize="12">
-                {grid.lines.map((angle, i) => {
-                    const { x, y } = polarToCartesianPlot(center, center, plotRadius + 15, angle);
-                    return <text key={i} x={x} y={y} textAnchor="middle" alignmentBaseline="middle">{i === 0 ? 12 : i}h</text>;
-                })}
-                 {grid.circles.slice(0, -1).map(r => {
-                    const { x, y } = polarToCartesianPlot(center, center, ipsToPx(r), 270);
-                    return <text key={r} x={x-5} y={y} textAnchor="end" alignmentBaseline="middle">{r.toFixed(1)}</text>;
-                })}
+                {grid.lines.map((angle, i) => { const { x, y } = polarToCartesianPlot(center, center, plotRadius + 15, angle); return <text key={i} x={x} y={y} textAnchor="middle" alignmentBaseline="middle">{i === 0 ? 12 : i}h</text>; })}
+                 {grid.circles.slice(0, -1).map(r => { const { x, y } = polarToCartesianPlot(center, center, ipsToPx(r), 270); return <text key={r} x={x-5} y={y} textAnchor="end" alignmentBaseline="middle">{r.toFixed(1)}</text>; })}
             </g>
-
             <g id="projection-lines">
                 {plotScrews.map((screw, screwIdx) => {
                     const neighbor1 = plotScrews[(screwIdx + 1) % screwCount];
                     const neighbor2 = plotScrews[(screwIdx + screwCount - 1) % screwCount];
-                    
                     return weightGrads.map(weight => {
-                        if(K <= 0) return null;
-                        const ips = weight / K;
-                        if (ips > maxIPS) return null;
+                        if(K <= 0) return null; const ips = weight / K; if (ips > maxIPS) return null;
                         const gradPoint = polarToCartesianPlot(center, center, ipsToPx(ips), screw.plotAngle);
-
                         const rayLength = plotRadius * 2;
                         const ray1End = getRayEndPoint(gradPoint, neighbor1.plotAngle, rayLength);
                         const ray2End = getRayEndPoint(gradPoint, neighbor2.plotAngle, rayLength);
-                        
-                        return (
-                            <g key={`${screw.name}-${weight}`}>
-                                <line x1={gradPoint.x} y1={gradPoint.y} x2={ray1End.x} y2={ray1End.y} stroke={"#22d3ee"} strokeOpacity="0.4" strokeWidth="1.5" />
-                                <line x1={gradPoint.x} y1={gradPoint.y} x2={ray2End.x} y2={ray2End.y} stroke={"#22d3ee"} strokeOpacity="0.4" strokeWidth="1.5" />
-                            </g>
-                        );
+                        return ( <g key={`${screw.name}-${weight}`}><line x1={gradPoint.x} y1={gradPoint.y} x2={ray1End.x} y2={ray1End.y} stroke={"#22d3ee"} strokeOpacity="0.4" strokeWidth="1.5" /><line x1={gradPoint.x} y1={gradPoint.y} x2={ray2End.x} y2={ray2End.y} stroke={"#22d3ee"} strokeOpacity="0.4" strokeWidth="1.5" /></g>);
                     });
                 })}
             </g>
-
             <g id="screws">
                 {plotScrews.map(screw => {
                     const isSelected = parseInt(screw.name) === selectedScrew;
                     const endPoint = polarToCartesianPlot(center, center, plotRadius, screw.plotAngle);
-                    return (
-                        <g key={screw.name}>
-                            <line x1={center} y1={center} x2={endPoint.x} y2={endPoint.y} stroke={screw.color} strokeWidth={isSelected ? "8" : "4"} />
-                            <circle cx={endPoint.x} cy={endPoint.y} r={isSelected ? "12" : "10"} fill={screw.color}/>
-                            <text x={endPoint.x} y={endPoint.y} className="fill-black" textAnchor="middle" alignmentBaseline="middle" fontWeight="bold">{screw.name}</text>
-                        </g>
-                    );
+                    return ( <g key={screw.name}><line x1={center} y1={center} x2={endPoint.x} y2={endPoint.y} stroke={screw.color} strokeWidth={isSelected ? "8" : "4"} /><circle cx={endPoint.x} cy={endPoint.y} r={isSelected ? "12" : "10"} fill={screw.color}/><text x={endPoint.x} y={endPoint.y} className="fill-black" textAnchor="middle" alignmentBaseline="middle" fontWeight="bold">{screw.name}</text></g>);
                 })}
             </g>
-            
             <g id="vector-chain">
                 {vectorChain.map((vector, index) => {
                     const isSelected = parseInt(vector.name) === selectedScrew;
-                    return (
-                        <line 
-                            key={`vector-chain-${index}`}
-                            x1={vector.start.x} y1={vector.start.y} 
-                            x2={vector.end.x} y2={vector.end.y} 
-                            stroke="#22c55e"
-                            strokeWidth={isSelected ? "5" : "2.5"}
-                        />
-                    );
+                    return ( <line key={`vector-chain-${index}`} x1={vector.start.x} y1={vector.start.y} x2={vector.end.x} y2={vector.end.y} stroke="#22c55e" strokeWidth={isSelected ? "5" : "2.5"}/>);
                 })}
             </g>
-
             <g id="unbalance-point">
                 <circle cx={unbalancePoint.x} cy={unbalancePoint.y} r="5" fill="none" stroke="#1079bd" strokeWidth="2" />
                 <circle cx={unbalancePoint.x} cy={unbalancePoint.y} r="2" fill="#1079bd" />
@@ -611,48 +483,28 @@ const HomePage = ({ setPage, lang, setLang, t, theme, toggleTheme }) => {
             </div>
             
             <div className="mt-8 flex w-7/15 max-w-sm items-stretch justify-center gap-2">
-                {/* Language Selector */}
                 <div className="relative flex-grow" ref={langPopupRef}>
                     {isLangPopupOpen && (
                         <div className="absolute bottom-full mb-2 w-full bg-white dark:bg-gray-700 rounded-md shadow-lg overflow-hidden z-10 max-h-60 overflow-y-auto">
                             <div className="flex flex-col">
                                 {Object.keys(translations).sort((a,b) => langNames[a].localeCompare(langNames[b])).map(langCode => (
-                                    <button
-                                        key={langCode}
-                                        onClick={() => {
-                                            setLang(langCode);
-                                            setIsLangPopupOpen(false);
-                                        }}
-                                        className={`w-full text-left p-3 text-sm font-bold ${lang === langCode ? 'bg-sky-500 text-white' : 'text-gray-800 dark:text-gray-200 hover:bg-sky-100 dark:hover:bg-sky-800'}`}
-                                    >
+                                    <button key={langCode} onClick={() => { setLang(langCode); setIsLangPopupOpen(false); }} className={`w-full text-left p-3 text-sm font-bold ${lang === langCode ? 'bg-sky-500 text-white' : 'text-gray-800 dark:text-gray-200 hover:bg-sky-100 dark:hover:bg-sky-800'}`}>
                                         {langNames[langCode]}
                                     </button>
                                 ))}
                             </div>
                         </div>
                     )}
-                    <button 
-                        onClick={() => setIsLangPopupOpen(!isLangPopupOpen)} 
-                        className="w-full h-full p-3 text-sm text-gray-900 dark:text-white bg-white dark:bg-gray-700 rounded-md hover:bg-sky-100 dark:hover:bg-sky-800 flex justify-between items-center shadow-lg"
-                    >
+                    <button onClick={() => setIsLangPopupOpen(!isLangPopupOpen)} className="w-full h-full p-3 text-sm text-gray-900 dark:text-white bg-white dark:bg-gray-700 rounded-md hover:bg-sky-100 dark:hover:bg-sky-800 flex justify-between items-center shadow-lg">
                         <span className="font-bold">{langNames[lang]}</span>
                         <svg className={`w-4 h-4 transform transition-transform duration-200 ${isLangPopupOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7" /></svg>
                     </button>
                 </div>
-
-                {/* Theme Toggle Button */}
                 <button onClick={toggleTheme} className="p-3 flex-shrink-0 text-gray-900 dark:text-white bg-white dark:bg-gray-700 rounded-md hover:bg-sky-100 dark:hover:bg-sky-800 flex justify-center items-center shadow-lg">
-                    {theme === 'dark' ? (
-                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
-                    ) : (
-                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
-                    )}
+                    {theme === 'dark' ? ( <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>) : ( <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>)}
                 </button>
             </div>
-
-            <footer className="absolute bottom-4 text-xs text-gray-500 dark:text-gray-600">
-                &copy; {yearString} Hélicoptères Guimbal, SAS
-            </footer>
+            <footer className="absolute bottom-4 text-xs text-gray-500 dark:text-gray-600">&copy; {yearString} Hélicoptères Guimbal, SAS</footer>
         </div>
     );
 };
@@ -709,6 +561,22 @@ const MainRotorPage = ({ setPage, t }) => {
             return { ...prevState, history: newHistory };
         });
     }, []);
+
+    // Reset History Handler
+    const handleResetHistory = useCallback(() => {
+        const currentStep = history[currentStepIndex];
+        const newStepZero = {
+            ...initialStepState,
+            amplitude: currentStep.amplitude,
+            phaseDeg: currentStep.phaseDeg,
+            userInput: currentStep.userInput, 
+            currentWeights: currentStep.currentWeights, 
+            actualChange: { Yellow: 0, Green: 0, Red: 0 },
+            recommendedChange: { Yellow: 0, Green: 0, Red: 0 },
+        };
+        setRotorState({ history: [newStepZero], currentStepIndex: 0 });
+        topRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [history, currentStepIndex, initialStepState]);
 
     const isBalanced = amplitude < 0.2 && userInput;
 
@@ -973,7 +841,9 @@ const MainRotorPage = ({ setPage, t }) => {
                         <ul className="space-y-4 text-sm text-gray-700 dark:text-gray-300 list-disc list-inside">
                            <li><strong>Before you start:</strong> Enter all weights currently on the rotor in the "Currently Installed" fields.</li>
                            <li><strong>First Run is for Calibration:</strong> The first measurement helps the app learn your rotor. Vibration may not decrease and might even increase—this is normal. A significant improvement is expected on the <em>second</em> step.</li>
-                           <li><strong>After Blade Track Adjustments:</strong> Any change to pitch links or trim tabs resets the learning process. The next run will again serve as a calibration step.</li>
+                           <li>
+                               <strong>After Blade Track Adjustments:</strong> {t?.help?.pitchLinkReset || "If you adjust pitch links or trim tabs, the rotor behavior changes. You must click the 'Reset Learning' button (next to Weight Distribution) to clear the old history. The next run will serve as a new calibration step."}
+                           </li>
                            <li><strong>Deviating from the Recommendation:</strong> If you install different weights than recommended, you <strong>must update the values</strong> in the "Detailed Setup" section. This is critical for the algorithm's accuracy.</li>
                            <li><strong>Need Assistance?</strong> If you're still having issues after a few steps, please contact <a href="mailto:support@guimbal.com" className="text-sky-500 hover:underline"><strong>support@guimbal.com</strong></a>.</li>
                         </ul>
@@ -1025,7 +895,11 @@ const MainRotorPage = ({ setPage, t }) => {
                 </div>
 
                 <div className="p-4 mb-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
-                    <h2 className="text-xl font-semibold text-sky-600 dark:text-sky-400 mb-1">{t.mainRotor.weightDistribution}</h2>
+                    {/* Reset button remains here for Main Rotor */}
+                    <div className="flex items-center mb-1">
+                        <h2 className="text-xl font-semibold text-sky-600 dark:text-sky-400">{t.mainRotor.weightDistribution}</h2>
+                        <ResetHistoryButton onReset={handleResetHistory} isVisible={currentStepIndex > 0} t={t} />
+                    </div>
                      <div className="mt-4 space-y-2">
                         <div className="grid grid-cols-3 gap-x-2 sm:gap-x-4 px-3">
                             <div></div>
@@ -1190,6 +1064,22 @@ const TailRotorPage = ({ setPage, t }) => {
         });
     }, []);
 
+    // Reset History Handler (Tail Rotor)
+    const handleResetHistory = useCallback(() => {
+        const currentStep = history[currentStepIndex];
+        const newStepZero = {
+            ...initialStepState,
+            amplitude: currentStep.amplitude,
+            phaseDeg: currentStep.phaseDeg,
+            userInput: currentStep.userInput,
+            currentWashers: currentStep.currentWashers, // Keep currently installed washers
+            recommendedWashers: currentStep.currentWashers,
+            actualWashers: currentStep.currentWashers,
+        };
+        setRotorState({ history: [newStepZero], currentStepIndex: 0 });
+        topRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [history, currentStepIndex, initialStepState]);
+
     const screwAngles = useMemo(() => Array.from({length: screwCount}, (_, i) => (360 / screwCount) * i + (360 / (2 * screwCount))), [screwCount]);
     
     const isBalanced = amplitude < 0.2 && userInput;
@@ -1289,7 +1179,6 @@ const TailRotorPage = ({ setPage, t }) => {
                         screwIndexCombos.push([...currentCombo]);
                         return;
                     }
-                    // FIX: Start the loop from the 'start' parameter
                     for (let i = start; i < screwCount; i++) { 
                         currentCombo.push(i);
                         getCombos(i + 1, currentCombo);
@@ -1409,7 +1298,13 @@ const TailRotorPage = ({ setPage, t }) => {
                         <ul className="space-y-4 text-sm text-gray-700 dark:text-gray-300 list-disc list-inside">
                             <li><strong>Before you start:</strong> Enter all washers currently on the rotor in the "Installed Weights" fields.</li>
                             <li><strong>First Run is for Calibration:</strong> The first measurement helps the app learn your rotor. Vibration may not decrease and might even increase—this is normal. A significant improvement is expected on the <em>second</em> step.</li>
-                            <li><strong>Deviating from the Recommendation:</strong> If you install a different washer combination than recommended, you <strong>must update the values</strong> in the "Detailed Setup" section to reflect what you actually installed. This is critical for the algorithm's accuracy.</li>
+                            {/* UPDATED HELP TEXT */}
+                            <li>
+                                <strong>Deviating from the Recommendation:</strong> If you install a different washer combination than recommended, you <strong>must update the values</strong> in the "Detailed Setup" section to reflect what you actually installed.
+                            </li>
+                            <li>
+                                <strong>After Blade Track Adjustments:</strong> {t?.help?.pitchLinkReset || "If you adjust pitch links or trim tabs, the rotor behavior changes. You must click the 'Reset Learning' button (next to Recommendation) to clear the old history. The next run will serve as a new calibration step."}
+                            </li>
                             <li><strong>Need Assistance?</strong> If you're still having issues after a few steps, please contact <a href="mailto:support@guimbal.com" className="text-sky-500 hover:underline"><strong>support@guimbal.com</strong></a>.</li>
                         </ul>
                         <div className="mt-6 text-right">
@@ -1459,6 +1354,7 @@ const TailRotorPage = ({ setPage, t }) => {
 
                 <div className="p-4 mb-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
                      {currentStepIndex > 0 ? (
+                        // Reverted back to simple toggle button (Reset button moved)
                         <button onClick={() => setIsInstalledWeightsOpen(!isInstalledWeightsOpen)} className="flex justify-between items-center w-full">
                            <h2 className="text-xl font-semibold text-sky-600 dark:text-sky-400">{t.tailRotor.installedWeights}</h2>
                            <svg className={`w-6 h-6 text-sky-600 dark:text-sky-400 transform transition-transform duration-200 ${isInstalledWeightsOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
@@ -1486,7 +1382,11 @@ const TailRotorPage = ({ setPage, t }) => {
                 </div>
                 
                 <div className="p-4 mb-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
-                     <h2 className="mb-3 text-xl font-semibold text-sky-600 dark:text-sky-400">{t.tailRotor.recommendation}</h2>
+                     {/* UPDATED: Reset button placed here next to "Recommendation" title */}
+                     <div className="flex items-center mb-3">
+                        <h2 className="text-xl font-semibold text-sky-600 dark:text-sky-400">{t.tailRotor.recommendation}</h2>
+                        <ResetHistoryButton onReset={handleResetHistory} isVisible={currentStepIndex > 0} t={t} />
+                     </div>
                     <div>
                         <h3 className="mb-2 font-bold text-gray-500 dark:text-gray-400">{t.tailRotor.recommendedFinalWashers}</h3>
                         <div className="p-2 rounded-lg bg-gray-50 dark:bg-gray-900/50">
