@@ -1,5 +1,12 @@
 export const translations = {
     en: {
+        common: {
+            resetLearning: "↺ Reset Learning",
+            resetConfirm: "Have you adjusted pitch links or trim tabs?\n\nThis will clear the history of previous steps so the algorithm can learn the new aerodynamic configuration.\n\nAre you sure?",
+        },
+        help: {
+            pitchLinkReset: "After Blade Track Adjustments: If you adjust pitch links or trim tabs, the rotor behavior changes. You must click the 'Reset Learning' button to clear the old history. The next run will serve as a new calibration step."
+        },
         home: {
             title: 'G-Tune',
             subtitle: 'Cabri G2 Rotor Balancing Assistant',
@@ -85,6 +92,13 @@ export const translations = {
         }
     },
     fr: {
+        common: {
+            resetLearning: "↺ Réinitialiser l'Apprentissage",
+            resetConfirm: "Avez-vous ajusté les biellettes de pas ou les tabs ?\n\nCela effacera l'historique des étapes précédentes afin que l'algorithme puisse apprendre la nouvelle configuration aérodynamique.\n\nÊtes-vous sûr ?",
+        },
+        help: {
+            pitchLinkReset: "Après réglage du tracking : Si vous ajustez les biellettes de pas ou les tabs, le comportement du rotor change. Vous devez cliquer sur le bouton 'Réinitialiser l'Apprentissage' pour effacer l'ancien historique. La prochaine mesure servira de nouvelle étape de calibration."
+        },
         home: {
             title: 'G-Tune',
             subtitle: 'Équilibrage des rotors du Cabri G2',
@@ -170,6 +184,13 @@ export const translations = {
         }
     },
     es: {
+        common: {
+            resetLearning: "↺ Reiniciar Aprendizaje",
+            resetConfirm: "¿Ha ajustado las bieletas de paso o los trim tabs?\n\nEsto borrará el historial de los pasos anteriores para que el algoritmo pueda aprender la nueva configuración aerodinámica.\n\n¿Está seguro?",
+        },
+        help: {
+            pitchLinkReset: "Después de ajustar el tracking: Si ajusta las bieletas de paso o los trim tabs, el comportamiento del rotor cambia. Debe hacer clic en el botón 'Reiniciar Aprendizaje' para borrar el historial anterior. La siguiente ejecución servirá como un nuevo paso de calibración."
+        },
         home: {
             title: 'G-Tune',
             subtitle: 'Asistente de Equilibrado de Rotores del Cabri G2',
@@ -256,6 +277,13 @@ export const translations = {
         }
     },
     de: {
+        common: {
+            resetLearning: "↺ Lernen zurücksetzen",
+            resetConfirm: "Haben Sie die Steuerstangen (Pitch Links) oder Trimmbleche verstellt?\n\nDies löscht den Verlauf der vorherigen Schritte, damit der Algorithmus die neue aerodynamische Konfiguration erlernen kann.\n\nSind Sie sicher?",
+        },
+        help: {
+            pitchLinkReset: "Nach Spurlauf-Einstellungen: Wenn Sie Pitch Links oder Trimmbleche verstellen, ändert sich das Verhalten des Rotors. Sie müssen auf 'Lernen zurücksetzen' klicken, um den alten Verlauf zu löschen. Der nächste Lauf dient als neuer Kalibrierungsschritt."
+        },
         home: {
             title: 'G-Tune',
             subtitle: 'Assistent für das Auswuchten von Cabri G2 Rotoren',
@@ -342,6 +370,13 @@ export const translations = {
         }
     },
     it: {
+        common: {
+            resetLearning: "↺ Resetta Apprendimento",
+            resetConfirm: "Hai regolato le biellette di passo o i trim tabs?\n\nQuesto cancellerà la cronologia dei passaggi precedenti affinché l'algoritmo possa apprendere la nuova configurazione aerodinamica.\n\nSei sicuro?",
+        },
+        help: {
+            pitchLinkReset: "Dopo regolazioni del tracking: Se regoli le biellette di passo o i trim tabs, il comportamento del rotore cambia. Devi cliccare sul pulsante 'Resetta Apprendimento' per cancellare la vecchia cronologia. La prossima misurazione servirà come nuovo passaggio di calibrazione."
+        },
         home: {
             title: 'G-Tune',
             subtitle: 'Assistente al bilanciamento dei rotori del Cabri G2',
@@ -428,6 +463,13 @@ export const translations = {
         }
     },
     zh: {
+        common: {
+            resetLearning: "↺ 重置学习",
+            resetConfirm: "您是否调整了变距拉杆或调整片？\n\n这将清除先前步骤的历史记录，以便算法可以学习新的空气动力学配置。\n\n您确定吗？",
+        },
+        help: {
+            pitchLinkReset: "调整桨叶轨迹后：如果您调整了变距拉杆或调整片，旋翼行为会发生变化。您必须点击“重置学习”按钮以清除旧的历史记录。下一次运行将作为新的校准步骤。"
+        },
         home: {
             title: 'G-Tune',
             subtitle: 'Cabri G2 旋翼平衡助手',
@@ -514,6 +556,13 @@ export const translations = {
         }
     },
     pt: {
+        common: {
+            resetLearning: "↺ Redefinir Aprendizagem",
+            resetConfirm: "Você ajustou os pitch links ou os trim tabs?\n\nIsso limpará o histórico das etapas anteriores para que o algoritmo possa aprender a nova configuração aerodinâmica.\n\nTem certeza?",
+        },
+        help: {
+            pitchLinkReset: "Após ajustes de tracking: Se você ajustar pitch links ou trim tabs, o comportamento do rotor muda. Você deve clicar no botão 'Redefinir Aprendizagem' para limpar o histórico antigo. A próxima execução servirá como uma nova etapa de calibração."
+        },
         home: {
             title: 'G-Tune',
             subtitle: 'Assistente de Balanceamento de Rotor do Cabri G2',
@@ -600,6 +649,13 @@ export const translations = {
         }
     },
     hy: {
+        common: {
+            resetLearning: "↺ Վերականգնել ուսուցումը",
+            resetConfirm: "Դուք կարգավորե՞լ եք pitch link-երը կամ trim tab-երը:\n\nՍա կջնջի նախորդ քայլերի պատմությունը, որպեսզի ալգորիթմը կարողանա սովորել նոր աերոդինամիկ կոնֆիգուրացիան:\n\nՎստա՞հ եք:",
+        },
+        help: {
+            pitchLinkReset: "Blade Track կարգավորումներից հետո. Եթե դուք կարգավորում եք pitch link-երը կամ trim tab-երը, ռոտորի վարքագիծը փոխվում է: Դուք պետք է սեղմեք 'Վերականգնել ուսուցումը' կոճակը՝ հին պատմությունը ջնջելու համար: Հաջորդ գործարկումը կծառայի որպես նոր չափաբերման քայլ:"
+        },
         home: {
             title: 'G-Tune',
             subtitle: 'Cabri G2 ռոտորի հավասարակշռման օգնական',
@@ -686,6 +742,13 @@ export const translations = {
         }
     },
     ms: {
+        common: {
+            resetLearning: "↺ Tetapkan Semula Pembelajaran",
+            resetConfirm: "Adakah anda telah melaraskan pautan padang (pitch links) atau tab trim?\n\nIni akan mengosongkan sejarah langkah sebelumnya supaya algoritma boleh mempelajari konfigurasi aerodinamik baharu.\n\nAdakah anda pasti?",
+        },
+        help: {
+            pitchLinkReset: "Selepas Pelarasan Jejak Bilah: Jika anda melaraskan pautan padang atau tab trim, kelakuan rotor berubah. Anda mesti mengklik butang 'Tetapkan Semula Pembelajaran' untuk mengosongkan sejarah lama. Larian seterusnya akan berfungsi sebagai langkah penentukuran baharu."
+        },
         home: {
             title: 'G-Tune',
             subtitle: 'Pembantu Imbangan Rotor Cabri G2',
@@ -772,6 +835,13 @@ export const translations = {
         }
     },
     pl: {
+        common: {
+            resetLearning: "↺ Zresetuj Uczenie",
+            resetConfirm: "Czy regulowałeś cięgna (pitch links) lub klapki wyważające (trim tabs)?\n\nSpowoduje to wyczyszczenie historii poprzednich kroków, aby algorytm mógł nauczyć się nowej konfiguracji aerodynamicznej.\n\nJesteś pewien?",
+        },
+        help: {
+            pitchLinkReset: "Po regulacji torowania łopat: Jeśli wyregulujesz cięgna (pitch links) lub klapki wyważające (trim tabs), zachowanie wirnika ulegnie zmianie. Musisz kliknąć przycisk „Zresetuj Uczenie”, aby wyczyścić starą historię. Następny przebieg posłuży jako nowy krok kalibracyjny."
+        },
         home: {
             title: 'G-Tune',
             subtitle: 'Asystent wyważania wirników Cabri G2',
@@ -858,6 +928,13 @@ export const translations = {
         }
     },
     cs: {
+        common: {
+            resetLearning: "↺ Resetovat učení",
+            resetConfirm: "Upravili jste táhla (pitch links) nebo vyvažovací plošky (trim tabs)?\n\nTím se vymaže historie předchozích kroků, aby se algoritmus mohl naučit novou aerodynamickou konfiguraci.\n\nJste si jisti?",
+        },
+        help: {
+            pitchLinkReset: "Po úpravě stopy listů: Pokud upravíte táhla (pitch links) nebo vyvažovací plošky, chování rotoru se změní. Musíte kliknout na tlačítko 'Resetovat učení', abyste vymazali starou historii. Další běh bude sloužit jako nový kalibrační krok."
+        },
         home: {
             title: 'G-Tune',
             subtitle: 'Asistent pro vyvažování rotorů Cabri G2',
@@ -944,6 +1021,13 @@ export const translations = {
         }
     },
     ro: {
+        common: {
+            resetLearning: "↺ Resetează Învățarea",
+            resetConfirm: "Ați reglat bieletele de pas (pitch links) sau trim tabs?\n\nAceasta va șterge istoricul pașilor anteriori, astfel încât algoritmul să poată învăța noua configurație aerodinamică.\n\nSunteți sigur?",
+        },
+        help: {
+            pitchLinkReset: "După ajustarea tracking-ului: Dacă ajustați bieletele de pas sau trim tabs, comportamentul rotorului se schimbă. Trebuie să faceți clic pe butonul 'Resetează Învățarea' pentru a șterge istoricul vechi. Următoarea rulare va servi ca un nou pas de calibrare."
+        },
         home: {
             title: 'G-Tune',
             subtitle: 'Asistent pentru echilibrarea rotoarelor Cabri G2',
@@ -1030,6 +1114,13 @@ export const translations = {
         }
     },
     nl: {
+        common: {
+            resetLearning: "↺ Leren resetten",
+            resetConfirm: "Heeft u de pitch links of trim tabs aangepast?\n\nDit wist de geschiedenis van eerdere stappen zodat het algoritme de nieuwe aerodynamische configuratie kan leren.\n\nWeet u het zeker?",
+        },
+        help: {
+            pitchLinkReset: "Na aanpassingen aan bladspoor: Als u pitch links of trim tabs aanpast, verandert het gedrag van de rotor. U moet op de knop 'Leren resetten' klikken om de oude geschiedenis te wissen. De volgende run dient als een nieuwe kalibratiestap."
+        },
         home: {
             title: 'G-Tune',
             subtitle: 'Cabri G2 Rotor Balanceringsassistent',
@@ -1116,6 +1207,13 @@ export const translations = {
         }
     },
     sv: {
+        common: {
+            resetLearning: "↺ Återställ Inlärning",
+            resetConfirm: "Har du justerat pitch links eller trim tabs?\n\nDetta rensar historiken från föregående steg så att algoritmen kan lära sig den nya aerodynamiska konfigurationen.\n\nÄr du säker?",
+        },
+        help: {
+            pitchLinkReset: "Efter justering av bladspårning: Om du justerar pitch links eller trim tabs, ändras rotorns beteende. Du måste klicka på knappen 'Återställ Inlärning' för att rensa den gamla historiken. Nästa körning kommer att fungera som ett nytt kalibreringssteg."
+        },
         home: {
             title: 'G-Tune',
             subtitle: 'Balanseringsassistent för Cabri G2-rotorer',
@@ -1202,6 +1300,13 @@ export const translations = {
         }
     },
     da: {
+        common: {
+            resetLearning: "↺ Nulstil Læring",
+            resetConfirm: "Har du justeret pitch links eller trim tabs?\n\nDette vil slette historikken fra tidligere trin, så algoritmen kan lære den nye aerodynamiske konfiguration.\n\nEr du sikker?",
+        },
+        help: {
+            pitchLinkReset: "Efter justering af bladsporing: Hvis du justerer pitch links eller trim tabs, ændres rotorens adfærd. Du skal klikke på knappen 'Nulstil Læring' for at slette den gamle historik. Næste kørsel vil fungere som et nyt kalibreringstrin."
+        },
         home: {
             title: 'G-Tune',
             subtitle: 'Cabri G2 Rotorafbalanceringsassistent',
@@ -1288,6 +1393,13 @@ export const translations = {
         }
     },
     fi: {
+        common: {
+            resetLearning: "↺ Nollaa Oppiminen",
+            resetConfirm: "Oletko säätänyt lapakulmatankoja (pitch links) tai säätölevyjä (trim tabs)?\n\nTämä tyhjentää aiempien vaiheiden historian, jotta algoritmi voi oppia uuden aerodynaamisen konfiguraation.\n\nOletko varma?",
+        },
+        help: {
+            pitchLinkReset: "Lapaseurannan säätämisen jälkeen: Jos säädät lapakulmatankoja tai säätölevyjä, roottorin käyttäytyminen muuttuu. Sinun on napsautettava 'Nollaa Oppiminen' -painiketta tyhjentääksesi vanhan historian. Seuraava ajo toimii uutena kalibrointivaiheena."
+        },
         home: {
             title: 'G-Tune',
             subtitle: 'Cabri G2 -roottorin tasapainotusavustaja',
@@ -1374,6 +1486,13 @@ export const translations = {
         }
     },
     uk: {
+        common: {
+            resetLearning: "↺ Скинути навчання",
+            resetConfirm: "Ви регулювали тяги кроку (pitch links) або тримери (trim tabs)?\n\nЦе очистить історію попередніх кроків, щоб алгоритм міг вивчити нову аеродинамічну конфігурацію.\n\nВи впевнені?",
+        },
+        help: {
+            pitchLinkReset: "Після регулювання співвісності лопатей: Якщо ви регулюєте тяги кроку або тримери, поведінка ротора змінюється. Ви повинні натиснути кнопку 'Скинути навчання', щоб очистити стару історію. Наступний запуск слугуватиме новим етапом калібрування."
+        },
         home: {
             title: 'G-Tune',
             subtitle: 'Асистент з балансування роторів Cabri G2',
@@ -1460,6 +1579,13 @@ export const translations = {
         }
     },
     he: {
+        common: {
+            resetLearning: "↺ אפס למידה",
+            resetConfirm: "האם כיוונת את ה-pitch links או ה-trim tabs?\n\nפעולה זו תמחק את ההיסטוריה של השלבים הקודמים כדי שהאלגוריתם יוכל ללמוד את התצורה האווירודינמית החדשה.\n\nהאם אתה בטוח?",
+        },
+        help: {
+            pitchLinkReset: "לאחר כיוון עקיבת להב: אם אתה מכוון את ה-pitch links או ה-trim tabs, התנהגות הרוטור משתנה. עליך ללחוץ על כפתור 'אפס למידה' כדי למחוק את ההיסטוריה הישנה. ההרצה הבאה תשמש כשלב כיול חדש."
+        },
         home: {
             title: 'G-Tune',
             subtitle: 'עוזר איזון רוטורים של Cabri G2',
@@ -1546,6 +1672,13 @@ export const translations = {
         }
     },
     vi: {
+        common: {
+            resetLearning: "↺ Đặt lại Học tập",
+            resetConfirm: "Bạn đã điều chỉnh pitch links hoặc trim tabs chưa?\n\nViệc này sẽ xóa lịch sử các bước trước đó để thuật toán có thể học cấu hình khí động học mới.\n\nBạn có chắc chắn không?",
+        },
+        help: {
+            pitchLinkReset: "Sau khi điều chỉnh tracking cánh: Nếu bạn điều chỉnh pitch links hoặc trim tabs, hành vi của rô-to sẽ thay đổi. Bạn phải nhấp vào nút 'Đặt lại Học tập' để xóa lịch sử cũ. Lần chạy tiếp theo sẽ đóng vai trò là một bước hiệu chuẩn mới."
+        },
         home: {
             title: 'G-Tune',
             subtitle: 'Trợ lý Cân bằng Rô-to Cabri G2',
@@ -1632,6 +1765,13 @@ export const translations = {
         }
     },
     et: {
+        common: {
+            resetLearning: "↺ Lähtesta Õppimine",
+            resetConfirm: "Kas olete reguleerinud pitch linke või trimmitabeleid?\n\nSee kustutab eelmiste sammude ajaloo, et algoritm saaks õppida uut aerodünaamilist konfiguratsiooni.\n\nKas olete kindel?",
+        },
+        help: {
+            pitchLinkReset: "Pärast labade jälgimise reguleerimist: Kui reguleerite pitch linke või trimmitabeleid, muutub rootori käitumine. Peate klõpsama nuppu 'Lähtesta Õppimine', et kustutada vana ajalugu. Järgmine käivitus toimib uue kalibreerimissammuna."
+        },
         home: {
             title: 'G-Tune',
             subtitle: 'Cabri G2 rootori tasakaalustamise abiline',
@@ -1718,6 +1858,13 @@ export const translations = {
         }
     },
     lv: {
+        common: {
+            resetLearning: "↺ Atiestatīt Mācīšanos",
+            resetConfirm: "Vai esat pielāgojis pitch links vai trim tabs?\n\nTas izdzēsīs iepriekšējo soļu vēsturi, lai algoritms varētu apgūt jauno aerodinamisko konfigurāciju.\n\nVai esat pārliecināts?",
+        },
+        help: {
+            pitchLinkReset: "Pēc lāpstiņu sekošanas pielāgošanas: Ja pielāgojat pitch links vai trim tabs, rotora uzvedība mainās. Jums jānoklikšķina uz pogas 'Atiestatīt Mācīšanos', lai izdzēstu veco vēsturi. Nākamā palaišana kalpos kā jauns kalibrēšanas solis."
+        },
         home: {
             title: 'G-Tune',
             subtitle: 'Cabri G2 rotora balansēšanas palīgs',
@@ -1804,6 +1951,13 @@ export const translations = {
         }
     },
     lt: {
+        common: {
+            resetLearning: "↺ Iš naujo nustatyti mokymąsi",
+            resetConfirm: "Ar sureguliavote pitch links arba trim tabs?\n\nTai išvalys ankstesnių žingsnių istoriją, kad algoritmas galėtų išmokti naują aerodinaminę konfigūraciją.\n\nAr tikrai?",
+        },
+        help: {
+            pitchLinkReset: "Po menčių sekimo reguliavimo: Jei sureguliuojate pitch links arba trim tabs, rotoriaus elgsena pasikeičia. Turite spustelėti mygtuką 'Iš naujo nustatyti mokymąsi', kad išvalytumėte seną istoriją. Kitas paleidimas bus naujas kalibravimo žingsnis."
+        },
         home: {
             title: 'G-Tune',
             subtitle: '„Cabri G2“ rotoriaus balansavimo asistentas',
@@ -1890,6 +2044,13 @@ export const translations = {
         }
     },
     sl: {
+        common: {
+            resetLearning: "↺ Ponastavi Učenje",
+            resetConfirm: "Ali ste prilagodili pitch links ali trim tabs?\n\nTo bo izbrisalo zgodovino prejšnjih korakov, da se bo algoritem lahko naučil nove aerodinamične konfiguracije.\n\nAli ste prepričani?",
+        },
+        help: {
+            pitchLinkReset: "Po prilagoditvi sledenja lopatic: Če prilagodite pitch links ali trim tabs, se obnašanje rotorja spremeni. Klikniti morate gumb 'Ponastavi Učenje', da izbrišete staro zgodovino. Naslednji zagon bo služil kot nov kalibracijski korak."
+        },
         home: {
             title: 'G-Tune',
             subtitle: 'Pomočnik za uravnoteženje rotorjev Cabri G2',
@@ -1976,6 +2137,13 @@ export const translations = {
         }
     },
     mn: {
+        common: {
+            resetLearning: "↺ Суралцахыг дахин тохируулах",
+            resetConfirm: "Та pitch links эсвэл trim tabs-ийг тохируулсан уу?\n\nЭнэ нь өмнөх алхмуудын түүхийг устгах тул алгоритм шинэ аэродинамик тохиргоог сурах боломжтой болно.\n\nТа итгэлтэй байна уу?",
+        },
+        help: {
+            pitchLinkReset: "Blade Track тохируулгын дараа: Хэрэв та pitch links эсвэл trim tabs-ийг тохируулбал роторын үйлдэл өөрчлөгдөнө. Хуучин түүхийг устгахын тулд 'Суралцахыг дахин тохируулах' товчийг дарах ёстой. Дараагийн ажиллуулалт нь шинэ тохируулгын алхам болно."
+        },
         home: {
             title: 'G-Tune',
             subtitle: 'Cabri G2 Роторын тэнцвэржүүлэх туслах',
