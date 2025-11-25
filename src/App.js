@@ -10,6 +10,18 @@ import Report from './Report.js';
 import { translations, langNames } from './translations.js';
 
 
+const initialStepState = {
+        amplitude: 0,
+        phaseDeg: 0,
+        userInput: false,
+        currentWeights: { Yellow: 0, Green: 0, Red: 0 },
+        recommendedChange: { Yellow: 0, Green: 0, Red: 0 },
+        recommendedTotalWeights: { Yellow: 0, Green: 0, Red: 0 },
+        actualChange: { Yellow: 0, Green: 0, Red: 0 },
+        calculatedCoeffs: { K: null, Phi: null },
+    };
+
+
 // --- UTILITY FUNCTIONS ---
 
 // Vector math helpers
@@ -515,17 +527,6 @@ const MainRotorPage = ({ setPage, t }) => {
     const topRef = useRef(null);
     const bladeTextColors = { Yellow: 'text-yellow-400', Red: 'text-red-500', Green: 'text-green-500' };
     const [isHelpPopupOpen, setIsHelpPopupOpen] = useState(false);
-    
-    const initialStepState = {
-        amplitude: 0,
-        phaseDeg: 0,
-        userInput: false,
-        currentWeights: { Yellow: 0, Green: 0, Red: 0 },
-        recommendedChange: { Yellow: 0, Green: 0, Red: 0 },
-        recommendedTotalWeights: { Yellow: 0, Green: 0, Red: 0 },
-        actualChange: { Yellow: 0, Green: 0, Red: 0 },
-        calculatedCoeffs: { K: null, Phi: null },
-    };
 
     const [rotorState, setRotorState] = useState({
         history: [initialStepState],
