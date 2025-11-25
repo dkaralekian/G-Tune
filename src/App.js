@@ -21,6 +21,7 @@ const initialStepState = {
         calculatedCoeffs: { K: null, Phi: null },
     };
 
+// Fix for Netlify
 
 // --- UTILITY FUNCTIONS ---
 
